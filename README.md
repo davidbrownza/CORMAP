@@ -1,2 +1,2 @@
 # CORMAP
-Simple C++ classes Object Relational Mapping
+Simple C++ classes for Object Relational Mapping
