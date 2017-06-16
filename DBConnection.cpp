@@ -26,14 +26,14 @@ int DBConnection::deleteStatement()
 	return 0;
 }
 
-int DBConnection::executeStatement(int numRetries)
+int DBConnection::executeStatement()
 {
 	prep_stmt->execute(); 
 	
 	return 0;
 }
 
-sql::ResultSet* DBConnection::executeQuery(int numRetries)
+sql::ResultSet* DBConnection::executeQuery()
 {
 	sql::ResultSet *res;
 	res = prep_stmt->executeQuery(); 
