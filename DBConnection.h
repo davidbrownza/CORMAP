@@ -12,9 +12,9 @@ class DBConnection
 		//Data Access Methods
 		int prepareStatement(string sql);
 		int deleteStatement();
-		int executeStatement(int numRetries = 2);
-		
-		sql::ResultSet* executeQuery(int numRetries = 2);
+
+		int executeStatement();
+		sql::ResultSet* executeQuery();
 		
 		void setString(int paramNum, string value);
 		void setInt(int paramNum, int value);
