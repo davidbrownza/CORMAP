@@ -15,8 +15,8 @@ class Field {
         bool nullable;
         bool _isNull;
         bool autoFilled;
-	
-	public:
+    
+    public:
         Field(string name, FieldType type, bool primary=false, bool unique=false, bool null=true, bool autoF=false) {
             fieldName = name;
             fieldType = type;
@@ -64,7 +64,7 @@ class IntegerField: public Field {
     private:
         int fieldValue;
         bool autoIncrement;
-	    
+        
     public:
         IntegerField(string name, int defaultValue=0, bool primary=false, bool unique=false, bool nullable=true, bool autoInc=false): 
             Field(name, INTEGER, primary, unique, nullable, autoInc) 
@@ -87,7 +87,7 @@ class FloatField: public Field {
     
     private:
         double fieldValue;
-	    
+        
     public:
         FloatField(string name, double defaultValue=0, bool primary=false, bool unique=false, bool nullable=true): 
             Field(name, FLOAT, primary, unique, nullable) 
@@ -109,7 +109,7 @@ class TextField: public Field {
     
     private:
         string fieldValue;
-	    
+        
     public:
         TextField(string name, string defaultValue="", bool primary=false, bool unique=false, bool nullable=true): 
             Field(name, TEXT, primary, unique, nullable) 
