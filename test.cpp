@@ -4,14 +4,14 @@ using namespace std;
 
 class Protein: public Model
 {
-	public:
-	    Protein(): Model("Proteins") {}
-	    
-	    IntegerField * proteinID = integerField ("Protein_ID");
-	    TextField * proteinName = textField ("Protein_Name");
+    public:
+        Protein(): Model("Proteins") {}
+        
+        IntegerField * proteinID = integerField ("Protein_ID");
+        TextField * proteinName = textField ("Protein_Name");
 };
 
-//main method	
+//main method    
 int main(int argc, const char* argv[] )
 {
     Protein m;
