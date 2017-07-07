@@ -3,7 +3,7 @@
 
 using namespace std;
 
-enum FieldType { INTEGER, FLOAT, TEXT };
+enum FieldType { INTEGER, FLOAT, TEXT, CHAR };
 
 class Field {
     
@@ -123,6 +123,28 @@ class TextField: public Field {
         }
         
         string getValue() {
+            return fieldValue;
+        }
+};
+
+class CharField: public Field {
+    
+    private:
+        char fieldValue;
+        
+    public:
+        CharField(string name, char defaultValue='\0', bool primary=false, bool unique=false, bool nullable=true): 
+            Field(name, CHAR, primary, unique, nullable) 
+        { 
+            fieldValue = defaultValue;
+        } 
+        
+        void setValue(char value) {
+            setNull(false);
+            fieldValue = value;
+        }
+        
+        char getValue() {
             return fieldValue;
         }
 };

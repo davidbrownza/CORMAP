@@ -37,6 +37,14 @@ TextField* Model::textField(string name, string defaultValue, bool primary, bool
     return f;
 }
 
+CharField* Model::charField(string name, char defaultValue, bool primary, bool unique, bool nullable)
+{
+    CharField * f = new CharField(name, defaultValue, primary, unique, nullable);
+    fields.push_back(f);
+    
+    return f;
+}
+
 int Model::insert(Mode mode)
 {
     vector<Model*> models;
@@ -110,6 +118,16 @@ int Model::insertBatch(vector<Model*> models, int batchsize, Mode mode)
                         conn.setNull(paramNum);
                     } else {
                         conn.setString(paramNum, i->getValue());
+                    }
+                }
+                else if(f->getType() == CHAR)
+                {
+                    CharField * i = static_cast <CharField*>(f);
+                    if (i->isNull()) {
+                        conn.setNull(paramNum);
+                    } else {
+                        //Convert Char value to string inside conn.setString() call
+                        conn.setString(paramNum, string(1, i->getValue()));
                     }
                 }
             }
