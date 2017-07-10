@@ -1,5 +1,6 @@
 #include <string>
 #include <iostream>
+#include <exception>
 
 using namespace std;
 
@@ -130,21 +131,33 @@ class TextField: public Field {
 class CharField: public Field {
     
     private:
-        char fieldValue;
+        string fieldValue;
+        int maxLength;
         
     public:
-        CharField(string name, char defaultValue='\0', bool primary=false, bool unique=false, bool nullable=true): 
-            Field(name, CHAR, primary, unique, nullable) 
+        CharField(string name, int maxLen, string defaultValue="", bool primary=false, bool unique=false, bool nullable=true):
+            Field(name, CHAR, primary, unique, nullable, maxLen) 
         { 
             fieldValue = defaultValue;
+            maxLength = maxLen;
         } 
         
-        void setValue(char value) {
+        void setValue(string value) {
             setNull(false);
-            fieldValue = value;
+            fieldValue = checkMaxLen(value, maxLength);
         }
         
-        char getValue() {
+        string getValue() {
             return fieldValue;
+        }
+        int getMaxLen() {
+            return maxLength;
+        }
+        
+        string checkMaxLen(string newVal, int MaxLenVal) {
+            if (newVal.length() > MaxLenVal) {
+                throw length_error("Field value exeeds Max Length");
+            }
+            return newVal;            
         }
 };
