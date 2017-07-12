@@ -136,7 +136,7 @@ class CharField: public Field {
         
     public:
         CharField(string name, int maxLength, string defaultValue="", bool primary=false, bool unique=false, bool nullable=true):
-            Field(name, CHAR, primary, unique, nullable, maxLength) 
+            Field(name, CHAR, primary, unique, nullable) 
         { 
             _fieldValue = defaultValue;
             _maxLength = maxLength;
