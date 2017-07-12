@@ -56,32 +56,32 @@ int Model::insert(Mode mode)
 int Model::insertBatch(vector<Model*> models, int batchsize, Mode mode)
 {
     int size = models.size();
-	
-	if(size < batchsize)
-		batchsize = size;
-    	
-	//workout the size of the last batch
-	int rem = size % batchsize;
-	int finalFullBatch = size - rem;	
-	
-	//generate SQL 
-	string sqlHead; // INSERT INTO table_name (fields) VALUES
-	string sqlBatch; // (?,?..,?)
-	string sqlUpdate; // ON DUPLICATE KEY UPDATE field=VALUES(field),...
-	generateSQLParts(sqlHead, sqlBatch, sqlUpdate, mode);
-	
-	string sqlTail = generateSQLTail(sqlBatch, sqlUpdate, batchsize, mode);
-	
-	//cout << sqlHead + sqlTail << endl;
-	
-	//prepare first statement
-	conn.prepareStatement(sqlHead + sqlTail);
-	
-	int paramNum = 0;
-	bool finalBatch = false;
-	//iterate through the list of models inserting batches of the specified size
-	for (int i = 0; i < models.size(); i++)
-    {	
+    
+    if(size < batchsize)
+        batchsize = size;
+        
+    //workout the size of the last batch
+    int rem = size % batchsize;
+    int finalFullBatch = size - rem;    
+    
+    //generate SQL 
+    string sqlHead; // INSERT INTO table_name (fields) VALUES
+    string sqlBatch; // (?,?..,?)
+    string sqlUpdate; // ON DUPLICATE KEY UPDATE field=VALUES(field),...
+    generateSQLParts(sqlHead, sqlBatch, sqlUpdate, mode);
+    
+    string sqlTail = generateSQLTail(sqlBatch, sqlUpdate, batchsize, mode);
+    
+    //cout << sqlHead + sqlTail << endl;
+    
+    //prepare first statement
+    conn.prepareStatement(sqlHead + sqlTail);
+    
+    int paramNum = 0;
+    bool finalBatch = false;
+    //iterate through the list of models inserting batches of the specified size
+    for (int i = 0; i < models.size(); i++)
+    {    
         Model * m = models[i];
         //iterate through the list of fields, adding them as parameters
         for (int j = 0; j < m->fields.size(); j++) {
@@ -131,9 +131,9 @@ int Model::insertBatch(vector<Model*> models, int batchsize, Mode mode)
                 }
             }
         }
-        	    
+                
         if(i+1 == size || !finalBatch && (i+1) % batchsize == 0)
-        {    	
+        {        
             conn.executeStatement();
             
             //reset paramNum after execution
@@ -145,15 +145,15 @@ int Model::insertBatch(vector<Model*> models, int batchsize, Mode mode)
                 finalBatch = true;
                 
                 sqlTail = generateSQLTail(sqlBatch, sqlUpdate, rem, mode);
-            	batchsize = rem;
+                batchsize = rem;
             }
             
-            conn.deleteStatement(); 		
+            conn.deleteStatement();         
             conn.prepareStatement(sqlHead + sqlTail);
-        }    	
+        }        
     }  
     
-	return 0;
+    return 0;
 }
 
 
@@ -167,9 +167,9 @@ int Model::truncate() {
 
 
 int Model::setConnection(DBConnection connection)
-{	
-	conn = connection;
-	return 0;
+{    
+    conn = connection;
+    return 0;
 }
 
 
@@ -180,12 +180,12 @@ DBConnection Model::getConnection() {
 
 void Model::generateSQLParts(string &sqlHead, string &sqlBatch, string &sqlUpdate, Mode mode) {
     string sqlFields = "";
-	sqlBatch = "(";
-	sqlUpdate = " ON DUPLICATE KEY UPDATE ";
+    sqlBatch = "(";
+    sqlUpdate = " ON DUPLICATE KEY UPDATE ";
     
     bool firstField = true;
     
-	for (int i = 0; i < fields.size(); i++)
+    for (int i = 0; i < fields.size(); i++)
     {
         Field* f = fields[i];
         
@@ -211,29 +211,29 @@ void Model::generateSQLParts(string &sqlHead, string &sqlBatch, string &sqlUpdat
                 }
             }
         }
-	}
-	
-	sqlBatch += ")";
-	
-	if (mode == IGNORE) {
-	    sqlHead = "INSERT IGNORE INTO " + tableName + " (" +  sqlFields + ") VALUES ";
-	} else {
-	    sqlHead = "INSERT INTO " + tableName + " (" +  sqlFields + ") VALUES ";
-	}
+    }
+    
+    sqlBatch += ")";
+    
+    if (mode == IGNORE) {
+        sqlHead = "INSERT IGNORE INTO " + tableName + " (" +  sqlFields + ") VALUES ";
+    } else {
+        sqlHead = "INSERT INTO " + tableName + " (" +  sqlFields + ") VALUES ";
+    }
 }
 
 
 string Model::generateSQLTail(string sqlBatch, string sqlUpdate, int batchsize, Mode mode) {
     string sqlTail = sqlBatch;
-	
-	for(int j = 1; j < batchsize; j++)
-	{
-		sqlTail += "," + sqlBatch;
-	}
-	
-	if (mode == UPDATE) {
-	    sqlTail += sqlUpdate;
-	}
-	
+    
+    for(int j = 1; j < batchsize; j++)
+    {
+        sqlTail += "," + sqlBatch;
+    }
+    
+    if (mode == UPDATE) {
+        sqlTail += sqlUpdate;
+    }
+    
     return sqlTail;
 }

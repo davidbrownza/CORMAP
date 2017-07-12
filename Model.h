@@ -18,7 +18,7 @@ class Model
         void generateSQLParts(string &sqlHead, string &sqlBatch, string &sqlUpdate, Mode mode);
         string generateSQLTail(string sqlBatch, string sqlUpdate, int batchsize, Mode mode);
         
-	public:
+    public:
         Model(string name);
         ~Model();
         
@@ -39,9 +39,9 @@ class Model
         string tableName;
         vector<Field*> fields;
         
-	protected:
+    protected:
         
-		DBConnection conn;
+        DBConnection conn;
 };
 
 #endif
