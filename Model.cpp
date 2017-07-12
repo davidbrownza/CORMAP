@@ -37,9 +37,9 @@ TextField* Model::textField(string name, string defaultValue, bool primary, bool
     return f;
 }
 
-CharField* Model::charField(string name, int maxLen, string defaultValue, bool primary, bool unique, bool nullable)
+CharField* Model::charField(string name, int maxLength, string defaultValue, bool primary, bool unique, bool nullable)
 {
-    CharField * f = new CharField(name, maxLen, defaultValue, primary, unique, nullable);
+    CharField * f = new CharField(name, maxLength, defaultValue, primary, unique, nullable);
     fields.push_back(f);
     
     return f;

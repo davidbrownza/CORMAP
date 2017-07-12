@@ -4,15 +4,15 @@ using namespace std;
 
 class Protein: public Model
 {
-	public:
-	    Protein(): Model("Proteins") {}
-	    
-	    IntegerField * proteinID = integerField ("Protein_ID");
+    public:
+        Protein(): Model("Proteins") {}
+        
+        IntegerField * proteinID = integerField ("Protein_ID");
         CharField * proteinChain = charField ("Protein_Chain", 5); // Added for charField test
-	    TextField * proteinName = textField ("Protein_Name");
+        TextField * proteinName = textField ("Protein_Name");
 };
 
-//main method	
+//main method    
 int main(int argc, const char* argv[] )
 {
     Protein m;
@@ -24,5 +24,5 @@ int main(int argc, const char* argv[] )
     cout << m.tableName << endl;
     cout << m.proteinID->getValue() << " " << m.proteinID->getName() << endl;
     cout << m.proteinName->getValue() << " " << m.proteinName->getName() << endl;
-    cout << m.proteinChain->getValue() << " " << m.proteinChain->getName() << " " << m.proteinChain->getMaxLen() << endl;
+    cout << m.proteinChain->getValue() << " " << m.proteinChain->getName() << " " << m.proteinChain->getMaxLength() << endl;
 }

@@ -25,7 +25,7 @@ class Model
         IntegerField* integerField(string name, int defaultValue=0, bool primary=false, bool unique=false, bool nullable=true, bool autoInc=false);
         FloatField* floatField(string name, double defaultValue=0, bool primary=false, bool unique=false, bool nullable=true);
         TextField* textField(string name, string defaultValue="", bool primary=false, bool unique=false, bool nullable=true);
-        CharField* charField(string name, int maxLen, string defaultValue="", bool primary=false, bool unique=false, bool nullable=true);
+        CharField* charField(string name, int maxLength, string defaultValue="", bool primary=false, bool unique=false, bool nullable=true);
          
         int insert(Mode mode=UPDATE);
         int insertBatch(vector<Model*> models, int batchsize=100, Mode mode=UPDATE);

@@ -131,33 +131,34 @@ class TextField: public Field {
 class CharField: public Field {
     
     private:
-        string fieldValue;
-        int maxLength;
+        string _fieldValue;
+        int _maxLength;
         
     public:
-        CharField(string name, int maxLen, string defaultValue="", bool primary=false, bool unique=false, bool nullable=true):
-            Field(name, CHAR, primary, unique, nullable, maxLen) 
+        CharField(string name, int maxLength, string defaultValue="", bool primary=false, bool unique=false, bool nullable=true):
+            Field(name, CHAR, primary, unique, nullable, maxLength) 
         { 
-            fieldValue = defaultValue;
-            maxLength = maxLen;
+            _fieldValue = defaultValue;
+            _maxLength = maxLength;
         } 
         
         void setValue(string value) {
             setNull(false);
-            fieldValue = checkMaxLen(value, maxLength);
+            _fieldValue = checkMaxLength(value);
         }
         
         string getValue() {
-            return fieldValue;
-        }
-        int getMaxLen() {
-            return maxLength;
+            return _fieldValue;
         }
         
-        string checkMaxLen(string newVal, int MaxLenVal) {
-            if (newVal.length() > MaxLenVal) {
+        int getMaxLength() {
+            return _maxLength;
+        }
+        
+        string checkMaxLength(string newValue) {
+            if (newValue.length() > _maxLength) {
                 throw length_error("Field value exeeds Max Length");
             }
-            return newVal;            
+            return newValue;            
         }
 };
