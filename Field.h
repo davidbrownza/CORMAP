@@ -1,9 +1,10 @@
 #include <string>
 #include <iostream>
+#include <exception>
 
 using namespace std;
 
-enum FieldType { INTEGER, FLOAT, TEXT };
+enum FieldType { INTEGER, FLOAT, TEXT, CHAR };
 
 class Field {
     
@@ -124,5 +125,40 @@ class TextField: public Field {
         
         string getValue() {
             return fieldValue;
+        }
+};
+
+class CharField: public Field {
+    
+    private:
+        string _fieldValue;
+        int _maxLength;
+        
+    public:
+        CharField(string name, int maxLength, string defaultValue="", bool primary=false, bool unique=false, bool nullable=true):
+            Field(name, CHAR, primary, unique, nullable) 
+        { 
+            _fieldValue = defaultValue;
+            _maxLength = maxLength;
+        } 
+        
+        void setValue(string value) {
+            setNull(false);
+            _fieldValue = checkMaxLength(value);
+        }
+        
+        string getValue() {
+            return _fieldValue;
+        }
+        
+        int getMaxLength() {
+            return _maxLength;
+        }
+        
+        string checkMaxLength(string newValue) {
+            if (newValue.length() > _maxLength) {
+                throw length_error("Field value exeeds Max Length");
+            }
+            return newValue;            
         }
 };
