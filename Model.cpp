@@ -45,6 +45,14 @@ CharField* Model::charField(string name, int maxLength, string defaultValue, boo
     return f;
 }
 
+BooleanField* Model::booleanField(string name, bool defaultValue, bool primary, bool unique, bool nullable)
+{
+    BooleanField * f = new BooleanField(name, defaultValue, primary, unique, nullable);
+    fields.push_back(f);
+    
+    return f;
+}
+
 int Model::insert(Mode mode)
 {
     vector<Model*> models;
@@ -127,6 +135,15 @@ int Model::insertBatch(vector<Model*> models, int batchsize, Mode mode)
                         conn.setNull(paramNum);
                     } else {
                         conn.setString(paramNum, i->getValue());
+                    }
+                }
+                else if(f->getType() == BOOLEAN)
+                {
+                    BooleanField * i = static_cast <BooleanField*>(f);
+                    if (i->isNull()) {
+                        conn.setNull(paramNum);
+                    } else {
+                        conn.setInt(paramNum, i->getValue());
                     }
                 }
             }
