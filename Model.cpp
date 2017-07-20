@@ -102,44 +102,44 @@ int Model::insertBatch(vector<Model*> models, int batchsize, Mode mode)
                 
                 if (f->isNull()) {
                     conn.setNull(paramNum);
-                } else {
+                    continue;
+                } 
                     
-                    switch(f->getType()){
+                switch(f->getType()) {
 
-                        case INTEGER: 
-                        {
-                            IntegerField * i = static_cast <IntegerField*>(f);
-                            conn.setInt(paramNum, i->getValue());
-                        }
-                            break;
+                    case INTEGER: 
+                    {
+                        IntegerField * i = static_cast <IntegerField*>(f);
+                        conn.setInt(paramNum, i->getValue());
+                        break;
+                    }
 
-                        case FLOAT:
-                        {
-                            FloatField * i = static_cast <FloatField*>(f);
-                            conn.setDouble(paramNum, i->getValue());
-                        }
-                            break;
-                        
-                        case TEXT:
-                        {
-                            TextField * i = static_cast <TextField*>(f);
-                            conn.setString(paramNum, i->getValue());
-                        }
-                            break;
-                        
-                        case CHAR:
-                        {
-                            CharField * i = static_cast <CharField*>(f);
-                            conn.setString(paramNum, i->getValue());
-                        }
-                            break;
+                    case FLOAT:
+                    {
+                        FloatField * i = static_cast <FloatField*>(f);
+                        conn.setDouble(paramNum, i->getValue());
+                        break;
+                    }
+                    
+                    case TEXT:
+                    {
+                        TextField * i = static_cast <TextField*>(f);
+                        conn.setString(paramNum, i->getValue());
+                        break;
+                    }
+                    
+                    case CHAR:
+                    {
+                        CharField * i = static_cast <CharField*>(f);
+                        conn.setString(paramNum, i->getValue());
+                        break;
+                    }
 
-                        case BOOLEAN:
-                        {
-                            BooleanField * i = static_cast <BooleanField*>(f);
-                            conn.setInt(paramNum, i->getValue());
-                        }
-                            break;
+                    case BOOLEAN:
+                    {
+                        BooleanField * i = static_cast <BooleanField*>(f);
+                        conn.setInt(paramNum, i->getValue());
+                        break;
                     }
                 }
             }
