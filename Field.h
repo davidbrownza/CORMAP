@@ -4,7 +4,7 @@
 
 using namespace std;
 
-enum FieldType { INTEGER, FLOAT, TEXT, CHAR };
+enum FieldType { INTEGER, FLOAT, TEXT, CHAR, BOOLEAN };
 
 class Field {
     
@@ -160,5 +160,27 @@ class CharField: public Field {
                 throw length_error("Field value exeeds Max Length");
             }
             return newValue;            
+        }
+};
+
+class BooleanField: public Field {
+    
+    private:
+        bool _fieldValue;
+        
+    public:
+         BooleanField(string name, bool defaultValue=false, bool primary=false, bool unique=false, bool nullable=true): 
+            Field(name, BOOLEAN, primary, unique, nullable) 
+        { 
+            _fieldValue = defaultValue;
+        } 
+        
+        void setValue(bool value) {
+            setNull(false);
+            _fieldValue = value;
+        }
+        
+        bool getValue() {
+            return _fieldValue;
         }
 };

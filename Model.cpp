@@ -45,6 +45,14 @@ CharField* Model::charField(string name, int maxLength, string defaultValue, boo
     return f;
 }
 
+BooleanField* Model::booleanField(string name, bool defaultValue, bool primary, bool unique, bool nullable)
+{
+    BooleanField * f = new BooleanField(name, defaultValue, primary, unique, nullable);
+    fields.push_back(f);
+    
+    return f;
+}
+
 int Model::insert(Mode mode)
 {
     vector<Model*> models;
@@ -92,41 +100,46 @@ int Model::insertBatch(vector<Model*> models, int batchsize, Mode mode)
             if (!ignoreField) {
                 paramNum++;
                 
-                if (f->getType() == INTEGER)
-                {
-                    IntegerField * i = static_cast <IntegerField*>(f);
-                    if (i->isNull()) {
-                        conn.setNull(paramNum);
-                    } else {
-                        conn.setInt(paramNum, i->getValue());
-                    }
-                }
-                else if(f->getType() == FLOAT)
-                {
+                if (f->isNull()) {
+                    conn.setNull(paramNum);
+                    continue;
+                } 
                     
-                    FloatField * i = static_cast <FloatField*>(f);
-                    if (i->isNull()) {
-                        conn.setNull(paramNum);
-                    } else {
+                switch(f->getType()) {
+
+                    case INTEGER: 
+                    {
+                        IntegerField * i = static_cast <IntegerField*>(f);
+                        conn.setInt(paramNum, i->getValue());
+                        break;
+                    }
+
+                    case FLOAT:
+                    {
+                        FloatField * i = static_cast <FloatField*>(f);
                         conn.setDouble(paramNum, i->getValue());
+                        break;
                     }
-                }
-                else if(f->getType() == TEXT)
-                {
-                    TextField * i = static_cast <TextField*>(f);
-                    if (i->isNull()) {
-                        conn.setNull(paramNum);
-                    } else {
+                    
+                    case TEXT:
+                    {
+                        TextField * i = static_cast <TextField*>(f);
                         conn.setString(paramNum, i->getValue());
+                        break;
                     }
-                }
-                else if(f->getType() == CHAR)
-                {
-                    CharField * i = static_cast <CharField*>(f);
-                    if (i->isNull()) {
-                        conn.setNull(paramNum);
-                    } else {
+                    
+                    case CHAR:
+                    {
+                        CharField * i = static_cast <CharField*>(f);
                         conn.setString(paramNum, i->getValue());
+                        break;
+                    }
+
+                    case BOOLEAN:
+                    {
+                        BooleanField * i = static_cast <BooleanField*>(f);
+                        conn.setInt(paramNum, i->getValue());
+                        break;
                     }
                 }
             }
