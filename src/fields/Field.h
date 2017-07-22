@@ -1,6 +1,6 @@
 #include <string>
 #include <iostream>
-#include <exception>
+#include <stdexcept>
 
 using namespace std;
 
@@ -132,7 +132,7 @@ class CharField: public Field {
     
     private:
         string _fieldValue;
-        int _maxLength;
+        unsigned int _maxLength;
         
     public:
         CharField(string name, int maxLength, string defaultValue="", bool primary=false, bool unique=false, bool nullable=true):
@@ -157,7 +157,7 @@ class CharField: public Field {
         
         string checkMaxLength(string newValue) {
             if (newValue.length() > _maxLength) {
-                throw length_error("Field value exeeds Max Length");
+                throw std::length_error("Field value exeeds Max Length");
             }
             return newValue;            
         }
