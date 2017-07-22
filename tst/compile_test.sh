@@ -1,3 +1,3 @@
 #!/bin/bash
 
-g++ DBConnection.cpp Model.cpp test.cpp -o test -lmysqlcppconn 
+g++ src/conn/DBConnection.cpp src/model/Model.cpp tst/test.cpp -o tst/test -lmysqlcppconn
