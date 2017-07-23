@@ -1,4 +1,4 @@
-#include "Model.h"
+#include "../src/model/Model.h"
 
 using namespace std;
 

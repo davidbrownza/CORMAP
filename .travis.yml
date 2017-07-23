@@ -4,5 +4,6 @@ compiler:
   - clang
 before_install:
   - sudo apt-get install -y libmysqlcppconn-dev
-install: sh compile_test.sh
+  - cd tst
+install: make
 script: ./test
