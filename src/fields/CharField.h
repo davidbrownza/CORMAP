@@ -1,3 +1,6 @@
+#ifndef CHARFIELD_H
+#define CHARFIELD_H
+
 #include "Field.h"
 #include <stdexcept>
 
@@ -18,3 +21,5 @@ class CharField: public Field {
         int getMaxLength();
         string checkMaxLength(string newValue);
 };
+
+#endif

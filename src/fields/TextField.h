@@ -1,3 +1,6 @@
+#ifndef TEXTFIELD_H
+#define TEXTFIELD_H
+
 #include "Field.h"
 
 using namespace std;
@@ -13,3 +16,5 @@ class TextField: public Field {
         void setValue(string value);        
         string getValue();
 };
+
+#endif

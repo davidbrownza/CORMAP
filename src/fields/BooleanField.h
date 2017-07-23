@@ -1,3 +1,6 @@
+#ifndef BOOLEANFIELD_H
+#define BOOLEANFIELD_H
+
 #include "Field.h"
 
 using namespace std;
@@ -13,3 +16,5 @@ class BooleanField: public Field {
         void setValue(bool value);
         bool getValue();
 };
+
+#endif

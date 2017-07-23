@@ -1,3 +1,6 @@
+#ifndef INTEGERFIELD_H
+#define INTEGERFIELD_H
+
 #include "Field.h"
 
 using namespace std;
@@ -14,3 +17,5 @@ class IntegerField: public Field {
         void setValue(int value);        
         int getValue();
 };
+
+#endif

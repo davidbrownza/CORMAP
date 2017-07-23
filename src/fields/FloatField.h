@@ -1,3 +1,6 @@
+#ifndef FLOATFIELD_H
+#define FLOATFIELD_H
+
 #include "Field.h"
 
 using namespace std;
@@ -13,3 +16,5 @@ class FloatField: public Field {
         void setValue(double value);        
         double getValue();
 };
+
+#endif
