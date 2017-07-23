@@ -2,7 +2,12 @@
 #define MODEL_H
 
 #include "../conn/DBConnection.h"
-#include "../fields/Field.h"
+
+#include "../fields/IntegerField.h"
+#include "../fields/FloatField.h"
+#include "../fields/TextField.h"
+#include "../fields/CharField.h"
+#include "../fields/BooleanField.h"
 
 #include <string>
 #include <vector>
@@ -10,7 +15,6 @@
 using namespace std;
 
 enum Mode { UPDATE, IGNORE };
-
 
 class Model
 {
