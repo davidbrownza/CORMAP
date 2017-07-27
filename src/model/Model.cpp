@@ -6,71 +6,63 @@ Model::Model(string name) {
 }
 
 Model::~Model() {
-    for(vector<Field*>::const_iterator it = fields.begin(); it != fields.end(); it++)
-    {
+    for (vector<Field*>::const_iterator it = fields.begin(); it != fields.end(); it++) {
         delete *it;
     } 
     fields.clear();
 }
 
-IntegerField* Model::integerField(string name, int defaultValue, bool primary, bool unique, bool nullable, bool autoInc)
-{
-    IntegerField * f = new IntegerField(name, defaultValue, primary, unique, nullable, autoInc);
+IntegerField* Model::integerField(string fieldName, int defaultValue, bool primaryKey, bool unique, bool nullable, bool autoIncrement) {
+    IntegerField * f = new IntegerField(fieldName, defaultValue, primaryKey, unique, nullable, autoIncrement);
     fields.push_back(f);
     
     return f;
 }
 
-FloatField* Model::floatField(string name, double defaultValue, bool primary, bool unique, bool nullable)
-{
-    FloatField * f = new FloatField(name, defaultValue, primary, unique, nullable);
+FloatField* Model::floatField(string fieldName, double defaultValue, bool primaryKey, bool unique, bool nullable) {
+    FloatField * f = new FloatField(fieldName, defaultValue, primaryKey, unique, nullable);
     fields.push_back(f);
     
     return f;
 }
 
-TextField* Model::textField(string name, string defaultValue, bool primary, bool unique, bool nullable)
-{
-    TextField * f = new TextField(name, defaultValue, primary, unique, nullable);
+TextField* Model::textField(string fieldName, string defaultValue, bool primaryKey, bool unique, bool nullable) {
+    TextField * f = new TextField(fieldName, defaultValue, primaryKey, unique, nullable);
     fields.push_back(f);
     
     return f;
 }
 
-CharField* Model::charField(string name, int maxLength, string defaultValue, bool primary, bool unique, bool nullable)
-{
-    CharField * f = new CharField(name, maxLength, defaultValue, primary, unique, nullable);
+CharField* Model::charField(string fieldName, int maxLength, string defaultValue, bool primaryKey, bool unique, bool nullable) {
+    CharField * f = new CharField(fieldName, maxLength, defaultValue, primaryKey, unique, nullable);
     fields.push_back(f);
     
     return f;
 }
 
-BooleanField* Model::booleanField(string name, bool defaultValue, bool primary, bool unique, bool nullable)
-{
-    BooleanField * f = new BooleanField(name, defaultValue, primary, unique, nullable);
+BooleanField* Model::booleanField(string fieldName, bool defaultValue, bool primaryKey, bool unique, bool nullable) {
+    BooleanField * f = new BooleanField(fieldName, defaultValue, primaryKey, unique, nullable);
     fields.push_back(f);
     
     return f;
 }
 
-int Model::insert(Mode mode)
-{
+int Model::insert(Mode mode) {
     vector<Model*> models;
     models.push_back(this);
     
     return insertBatch(models, 1, mode);
 }
 
-int Model::insertBatch(vector<Model*> models, int batchsize, Mode mode)
-{
-    int size = models.size();
+int Model::insertBatch(vector<Model*> models, unsigned int batchsize, Mode mode) {
+    unsigned int size = models.size();
     
-    if(size < batchsize)
+    if (size < batchsize)
         batchsize = size;
         
     //workout the size of the last batch
     int rem = size % batchsize;
-    int finalFullBatch = size - rem;    
+    unsigned int finalFullBatch = size - rem;    
     
     //generate SQL 
     string sqlHead; // INSERT INTO table_name (fields) VALUES
@@ -88,11 +80,10 @@ int Model::insertBatch(vector<Model*> models, int batchsize, Mode mode)
     int paramNum = 0;
     bool finalBatch = false;
     //iterate through the list of models inserting batches of the specified size
-    for (int i = 0; i < models.size(); i++)
-    {    
+    for (unsigned int i = 0; i < models.size(); i++) {    
         Model * m = models[i];
         //iterate through the list of fields, adding them as parameters
-        for (int j = 0; j < m->fields.size(); j++) {
+        for (unsigned int j = 0; j < m->fields.size(); j++) {
             Field * f = m->fields[j];
             
             bool ignoreField = f->isAutoFilled();
@@ -103,40 +94,35 @@ int Model::insertBatch(vector<Model*> models, int batchsize, Mode mode)
                 if (f->isNull()) {
                     conn.setNull(paramNum);
                     continue;
-                } 
+                }
                     
                 switch(f->getType()) {
 
-                    case INTEGER: 
-                    {
+                    case INTEGER: {
                         IntegerField * i = static_cast <IntegerField*>(f);
                         conn.setInt(paramNum, i->getValue());
                         break;
                     }
 
-                    case FLOAT:
-                    {
+                    case FLOAT: {
                         FloatField * i = static_cast <FloatField*>(f);
                         conn.setDouble(paramNum, i->getValue());
                         break;
                     }
                     
-                    case TEXT:
-                    {
+                    case TEXT: {
                         TextField * i = static_cast <TextField*>(f);
                         conn.setString(paramNum, i->getValue());
                         break;
                     }
                     
-                    case CHAR:
-                    {
+                    case CHAR: {
                         CharField * i = static_cast <CharField*>(f);
                         conn.setString(paramNum, i->getValue());
                         break;
                     }
 
-                    case BOOLEAN:
-                    {
+                    case BOOLEAN: {
                         BooleanField * i = static_cast <BooleanField*>(f);
                         conn.setInt(paramNum, i->getValue());
                         break;
@@ -145,16 +131,14 @@ int Model::insertBatch(vector<Model*> models, int batchsize, Mode mode)
             }
         }
                 
-        if(i+1 == size || !finalBatch && (i+1) % batchsize == 0)
-        {        
+        if (i+1 == size || (!finalBatch && (i+1) % batchsize == 0)) {        
             conn.executeStatement();
             
             //reset paramNum after execution
             paramNum = 0;
             
             //the final batch will require a prepared statement that is only as long as the remaining no. of models
-            if(i+1 >= finalFullBatch)
-            {
+            if (i+1 >= finalFullBatch) {
                 finalBatch = true;
                 
                 sqlTail = generateSQLTail(sqlBatch, sqlUpdate, rem, mode);
@@ -179,8 +163,7 @@ int Model::truncate() {
 }
 
 
-int Model::setConnection(DBConnection connection)
-{    
+int Model::setConnection(DBConnection connection) {    
     conn = connection;
     return 0;
 }
@@ -198,15 +181,13 @@ void Model::generateSQLParts(string &sqlHead, string &sqlBatch, string &sqlUpdat
     
     bool firstField = true;
     
-    for (int i = 0; i < fields.size(); i++)
-    {
+    for (unsigned int i = 0; i < fields.size(); i++) {
         Field* f = fields[i];
         
         bool ignoreField = f->isAutoFilled();
         
         if (!ignoreField) {
-            if (firstField)
-            {
+            if (firstField) {
                 firstField = false;
                 
                 sqlFields +=  f->getName();
@@ -235,12 +216,10 @@ void Model::generateSQLParts(string &sqlHead, string &sqlBatch, string &sqlUpdat
     }
 }
 
-
 string Model::generateSQLTail(string sqlBatch, string sqlUpdate, int batchsize, Mode mode) {
     string sqlTail = sqlBatch;
     
-    for(int j = 1; j < batchsize; j++)
-    {
+    for (int j = 1; j < batchsize; j++) {
         sqlTail += "," + sqlBatch;
     }
     

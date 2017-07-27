@@ -2,20 +2,19 @@
 
 using namespace std;
 
-class Protein: public Model
-{
+class Protein: public Model {
+
     public:
         Protein(): Model("Proteins") {}
         
         IntegerField * proteinID = integerField ("Protein_ID");
-        CharField * proteinChain = charField ("Protein_Chain", 5); // Added for charField test
+        CharField * proteinChain = charField ("Protein_Chain", 5);
         TextField * proteinName = textField ("Protein_Name");
         BooleanField * proteinIsDrugTarget = booleanField ("Protein_IsDrugTarget"); 
 };
 
 //main method    
-int main(int argc, const char* argv[] )
-{
+int main(int argc, const char* argv[] ) {
     Protein m;
     m.proteinID->setValue(1);
     //m.proteinChain->setValue("charactergreaterthan5"); //should throw an exception

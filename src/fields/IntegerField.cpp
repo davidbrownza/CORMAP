@@ -1,16 +1,16 @@
 #include "IntegerField.h"
 
-IntegerField::IntegerField(string name, int defaultValue, bool primary, bool unique, bool nullable, bool autoInc): 
-    Field(name, INTEGER, primary, unique, nullable, autoInc) { 
-    fieldValue = defaultValue;
-    autoIncrement = autoInc;
+IntegerField::IntegerField(string fieldName, int defaultValue, bool primaryKey, bool unique, bool nullable, bool autoIncrement): 
+    Field(fieldName, INTEGER, primaryKey, unique, nullable, autoIncrement) { 
+    _fieldValue = defaultValue;
+    _autoIncrement = autoIncrement; //Should this be passed to Field (above)?
 }
 
 void IntegerField::setValue(int value) {
     setNull(false);
-    fieldValue = value;
+    _fieldValue = value;
 }
 
 int IntegerField::getValue() {
-    return fieldValue;
+    return _fieldValue;
 }

@@ -6,8 +6,8 @@
 
 using namespace std;
 
-class DBConnection
-{
+class DBConnection {
+    
     public:        
         //Data Access Methods
         int prepareStatement(string sql);
@@ -16,10 +16,10 @@ class DBConnection
         int executeStatement();
         sql::ResultSet* executeQuery();
         
-        void setString(int paramNum, string value);
-        void setInt(int paramNum, int value);
-        void setDouble(int paramNum, double value);
-        void setNull(int paramNum);
+        void setString(int parameterNumber, string value);
+        void setInt(int parameterNumber, int value);
+        void setDouble(int parameterNumber, double value);
+        void setNull(int parameterNumber);
         
         //DB Connection Methods
         int setConnection(sql::Connection **connection);
@@ -30,10 +30,10 @@ class DBConnection
     
     private:
         //Connection Variables
-        sql::Connection *conn;
-        sql::PreparedStatement *prep_stmt;
+        sql::Connection *_conn;
+        sql::PreparedStatement *_prep_stmt;
         
-        string h, u, p, s;
+        string _host, _user, _password, _schema;
         
         int connect();
 };
