@@ -27,4 +27,5 @@ if (condition) {
 9. Spaces are included before opening parentheses or curly braces, e.g. between `if` and `(`, `)` and `{`, etc
    * An exception to this is the declaration and use functions and classes. 
 10. Curly braces should always be used, even when not necessary.
-   * i.e. in single-line if-statement, for-loops, etc.
+    * e.g. Single-line if-statement, for-loops, etc.
+   
