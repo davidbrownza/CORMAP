@@ -28,11 +28,11 @@ class Model {
         Model(string name);
         ~Model();
         
-        IntegerField* integerField(string fieldName, int defaultValue=0, bool primaryKey=false, bool unique=false, bool nullable=true, bool autoIncrement=false);
-        FloatField* floatField(string fieldName, double defaultValue=0, bool primaryKey=false, bool unique=false, bool nullable=true);
-        TextField* textField(string fieldName, string defaultValue="", bool primaryKey=false, bool unique=false, bool nullable=true);
-        CharField* charField(string fieldName, int maxLength, string defaultValue="", bool primaryKey=false, bool unique=false, bool nullable=true);
-        BooleanField* booleanField(string fieldName, bool defaultValue=false, bool primaryKey=false, bool unique=false, bool nullable=true);
+        IntegerField* integerField(string fieldName, int defaultValue=0, bool isPrimaryKey=false, bool isUnique=false, bool isNullable=true, bool autoIncrement=false);
+        FloatField* floatField(string fieldName, double defaultValue=0, bool isPrimaryKey=false, bool isUnique=false, bool isNullable=true);
+        TextField* textField(string fieldName, string defaultValue="", bool isPrimaryKey=false, bool isUnique=false, bool isNullable=true);
+        CharField* charField(string fieldName, int maxLength, string defaultValue="", bool isPrimaryKey=false, bool isUnique=false, bool isNullable=true);
+        BooleanField* booleanField(string fieldName, bool defaultValue=false, bool isPrimaryKey=false, bool isUnique=false, bool nullable=true);
          
         int insert(Mode mode=UPDATE);
         int insertBatch(vector<Model*> models, unsigned int batchsize=100, Mode mode=UPDATE);
@@ -48,7 +48,7 @@ class Model {
         
     protected:
         
-        DBConnection conn;
+        DBConnection _connection;
 };
 
 #endif

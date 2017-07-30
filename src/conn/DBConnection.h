@@ -30,8 +30,8 @@ class DBConnection {
     
     private:
         //Connection Variables
-        sql::Connection *_conn;
-        sql::PreparedStatement *_prep_stmt;
+        sql::Connection *_connection;
+        sql::PreparedStatement *_preparedStatement;
         
         string _host, _user, _password, _schema;
         

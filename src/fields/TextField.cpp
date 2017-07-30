@@ -1,7 +1,7 @@
 #include "TextField.h"
 
-TextField::TextField(string fieldName, string defaultValue, bool primaryKey, bool unique, bool nullable): 
-    Field(fieldName, TEXT, primaryKey, unique, nullable) { 
+TextField::TextField(string fieldName, string defaultValue, bool isPrimaryKey, bool isUnique, bool isNullable): 
+    Field(fieldName, TEXT, isPrimaryKey, isUnique, isNullable) { 
     _fieldValue = defaultValue;
 } 
 

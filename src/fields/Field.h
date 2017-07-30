@@ -14,14 +14,14 @@ class Field {
     private:
         string _fieldName;
         FieldType _fieldType;
-        bool _primaryKey;
-        bool _unique;
-        bool _nullable;
+        bool _isPrimaryKey;
+        bool _isUnique;
+        bool _isNullable;
         bool _isNull;
         bool _autoFilled;
     
     public:
-        Field(string fieldName, FieldType fieldType, bool primaryKey=false, bool unique=false, bool nullable=true, bool autoFilled=false);
+        Field(string fieldName, FieldType fieldType, bool isPrimaryKey=false, bool isUnique=false, bool isNullable=true, bool autoFilled=false);
         
         string getName();        
         FieldType getType();        

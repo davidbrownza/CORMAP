@@ -11,7 +11,7 @@ class BooleanField: public Field {
         bool _fieldValue;
         
     public:
-        BooleanField(string fieldName, bool defaultValue=false, bool primaryKey=false, bool unique=false, bool nullable=true);
+        BooleanField(string fieldName, bool defaultValue=false, bool isPrimaryKey=false, bool isUnique=false, bool isNullable=true);
         
         void setValue(bool value);
         bool getValue();

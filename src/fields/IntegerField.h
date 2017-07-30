@@ -12,7 +12,7 @@ class IntegerField: public Field {
         bool _autoIncrement;
         
     public:
-        IntegerField(string fieldName, int defaultValue=0, bool primaryKey=false, bool unique=false, bool nullable=true, bool autoIncrement=false);
+        IntegerField(string fieldName, int defaultValue=0, bool isPrimaryKey=false, bool isUnique=false, bool isNullable=true, bool autoIncrement=false);
         
         void setValue(int value);        
         int getValue();

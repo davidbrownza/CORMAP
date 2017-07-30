@@ -12,36 +12,36 @@ Model::~Model() {
     fields.clear();
 }
 
-IntegerField* Model::integerField(string fieldName, int defaultValue, bool primaryKey, bool unique, bool nullable, bool autoIncrement) {
-    IntegerField * f = new IntegerField(fieldName, defaultValue, primaryKey, unique, nullable, autoIncrement);
+IntegerField* Model::integerField(string fieldName, int defaultValue, bool isPrimaryKey, bool isUnique, bool isNullable, bool autoIncrement) {
+    IntegerField * f = new IntegerField(fieldName, defaultValue, isPrimaryKey, isUnique, isNullable, autoIncrement);
     fields.push_back(f);
     
     return f;
 }
 
-FloatField* Model::floatField(string fieldName, double defaultValue, bool primaryKey, bool unique, bool nullable) {
-    FloatField * f = new FloatField(fieldName, defaultValue, primaryKey, unique, nullable);
+FloatField* Model::floatField(string fieldName, double defaultValue, bool isPrimaryKey, bool isUnique, bool isNullable) {
+    FloatField * f = new FloatField(fieldName, defaultValue, isPrimaryKey, isUnique, isNullable);
     fields.push_back(f);
     
     return f;
 }
 
-TextField* Model::textField(string fieldName, string defaultValue, bool primaryKey, bool unique, bool nullable) {
-    TextField * f = new TextField(fieldName, defaultValue, primaryKey, unique, nullable);
+TextField* Model::textField(string fieldName, string defaultValue, bool isPrimaryKey, bool isUnique, bool isNullable) {
+    TextField * f = new TextField(fieldName, defaultValue, isPrimaryKey, isUnique, isNullable);
     fields.push_back(f);
     
     return f;
 }
 
-CharField* Model::charField(string fieldName, int maxLength, string defaultValue, bool primaryKey, bool unique, bool nullable) {
-    CharField * f = new CharField(fieldName, maxLength, defaultValue, primaryKey, unique, nullable);
+CharField* Model::charField(string fieldName, int maxLength, string defaultValue, bool isPrimaryKey, bool isUnique, bool isNullable) {
+    CharField * f = new CharField(fieldName, maxLength, defaultValue, isPrimaryKey, isUnique, isNullable);
     fields.push_back(f);
     
     return f;
 }
 
-BooleanField* Model::booleanField(string fieldName, bool defaultValue, bool primaryKey, bool unique, bool nullable) {
-    BooleanField * f = new BooleanField(fieldName, defaultValue, primaryKey, unique, nullable);
+BooleanField* Model::booleanField(string fieldName, bool defaultValue, bool isPrimaryKey, bool isUnique, bool isNullable) {
+    BooleanField * f = new BooleanField(fieldName, defaultValue, isPrimaryKey, isUnique, isNullable);
     fields.push_back(f);
     
     return f;
@@ -57,17 +57,18 @@ int Model::insert(Mode mode) {
 int Model::insertBatch(vector<Model*> models, unsigned int batchsize, Mode mode) {
     unsigned int size = models.size();
     
-    if (size < batchsize)
+    if (size < batchsize) {
         batchsize = size;
+    }
         
     //workout the size of the last batch
     int rem = size % batchsize;
     unsigned int finalFullBatch = size - rem;    
     
     //generate SQL 
-    string sqlHead; // INSERT INTO table_name (fields) VALUES
-    string sqlBatch; // (?,?..,?)
-    string sqlUpdate; // ON DUPLICATE KEY UPDATE field=VALUES(field),...
+    string sqlHead; 
+    string sqlBatch; 
+    string sqlUpdate; 
     generateSQLParts(sqlHead, sqlBatch, sqlUpdate, mode);
     
     string sqlTail = generateSQLTail(sqlBatch, sqlUpdate, batchsize, mode);
@@ -75,7 +76,7 @@ int Model::insertBatch(vector<Model*> models, unsigned int batchsize, Mode mode)
     //cout << sqlHead + sqlTail << endl;
     
     //prepare first statement
-    conn.prepareStatement(sqlHead + sqlTail);
+    _connection.prepareStatement(sqlHead + sqlTail);
     
     int paramNum = 0;
     bool finalBatch = false;
@@ -92,7 +93,7 @@ int Model::insertBatch(vector<Model*> models, unsigned int batchsize, Mode mode)
                 paramNum++;
                 
                 if (f->isNull()) {
-                    conn.setNull(paramNum);
+                    _connection.setNull(paramNum);
                     continue;
                 }
                     
@@ -100,31 +101,31 @@ int Model::insertBatch(vector<Model*> models, unsigned int batchsize, Mode mode)
 
                     case INTEGER: {
                         IntegerField * i = static_cast <IntegerField*>(f);
-                        conn.setInt(paramNum, i->getValue());
+                        _connection.setInt(paramNum, i->getValue());
                         break;
                     }
 
                     case FLOAT: {
                         FloatField * i = static_cast <FloatField*>(f);
-                        conn.setDouble(paramNum, i->getValue());
+                        _connection.setDouble(paramNum, i->getValue());
                         break;
                     }
                     
                     case TEXT: {
                         TextField * i = static_cast <TextField*>(f);
-                        conn.setString(paramNum, i->getValue());
+                        _connection.setString(paramNum, i->getValue());
                         break;
                     }
                     
                     case CHAR: {
                         CharField * i = static_cast <CharField*>(f);
-                        conn.setString(paramNum, i->getValue());
+                        _connection.setString(paramNum, i->getValue());
                         break;
                     }
 
                     case BOOLEAN: {
                         BooleanField * i = static_cast <BooleanField*>(f);
-                        conn.setInt(paramNum, i->getValue());
+                        _connection.setInt(paramNum, i->getValue());
                         break;
                     }
                 }
@@ -132,7 +133,7 @@ int Model::insertBatch(vector<Model*> models, unsigned int batchsize, Mode mode)
         }
                 
         if (i+1 == size || (!finalBatch && (i+1) % batchsize == 0)) {        
-            conn.executeStatement();
+            _connection.executeStatement();
             
             //reset paramNum after execution
             paramNum = 0;
@@ -145,8 +146,8 @@ int Model::insertBatch(vector<Model*> models, unsigned int batchsize, Mode mode)
                 batchsize = rem;
             }
             
-            conn.deleteStatement();         
-            conn.prepareStatement(sqlHead + sqlTail);
+            _connection.deleteStatement();         
+            _connection.prepareStatement(sqlHead + sqlTail);
         }        
     }  
     
@@ -155,22 +156,22 @@ int Model::insertBatch(vector<Model*> models, unsigned int batchsize, Mode mode)
 
 
 int Model::truncate() {
-    conn.prepareStatement("TRUNCATE " + tableName);
-    conn.executeStatement();
-    conn.deleteStatement();
+    _connection.prepareStatement("TRUNCATE " + tableName);
+    _connection.executeStatement();
+    _connection.deleteStatement();
     
     return 0;
 }
 
 
 int Model::setConnection(DBConnection connection) {    
-    conn = connection;
+    _connection = connection;
     return 0;
 }
 
 
 DBConnection Model::getConnection() {
-    return conn;
+    return _connection;
 }
 
 
@@ -190,14 +191,14 @@ void Model::generateSQLParts(string &sqlHead, string &sqlBatch, string &sqlUpdat
             if (firstField) {
                 firstField = false;
                 
-                sqlFields +=  f->getName();
+                sqlFields += f->getName();
                 sqlBatch += "?";
                 
                 if (mode == UPDATE) {
                     sqlUpdate += f->getName() + " = VALUES(" + f->getName() + ")";
                 }
             } else {
-                sqlFields +=  ", " + f->getName();
+                sqlFields += ", " + f->getName();
                 sqlBatch += ",?";
                 
                 if (mode == UPDATE) {
@@ -210,9 +211,9 @@ void Model::generateSQLParts(string &sqlHead, string &sqlBatch, string &sqlUpdat
     sqlBatch += ")";
     
     if (mode == IGNORE) {
-        sqlHead = "INSERT IGNORE INTO " + tableName + " (" +  sqlFields + ") VALUES ";
+        sqlHead = "INSERT IGNORE INTO " + tableName + " (" + sqlFields + ") VALUES ";
     } else {
-        sqlHead = "INSERT INTO " + tableName + " (" +  sqlFields + ") VALUES ";
+        sqlHead = "INSERT INTO " + tableName + " (" + sqlFields + ") VALUES ";
     }
 }
 

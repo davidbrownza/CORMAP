@@ -11,7 +11,7 @@ class TextField: public Field {
         string _fieldValue;
         
     public:
-        TextField(string fieldName, string defaultValue="", bool primaryKey=false, bool unique=false, bool nullable=true);
+        TextField(string fieldName, string defaultValue="", bool isPrimaryKey=false, bool isUnique=false, bool isNullable=true);
         
         void setValue(string value);        
         string getValue();
