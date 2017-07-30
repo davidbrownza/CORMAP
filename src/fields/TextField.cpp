@@ -1,15 +1,15 @@
 #include "TextField.h"
 
-TextField::TextField(string name, string defaultValue, bool primary, bool unique, bool nullable): 
-    Field(name, TEXT, primary, unique, nullable) { 
-    fieldValue = defaultValue;
+TextField::TextField(string fieldName, string defaultValue, bool isPrimaryKey, bool isUnique, bool isNullable): 
+    Field(fieldName, TEXT, isPrimaryKey, isUnique, isNullable) { 
+    _fieldValue = defaultValue;
 } 
 
 void TextField::setValue(string value) {
     setNull(false);
-    fieldValue = value;
+    _fieldValue = value;
 }
 
 string TextField::getValue() {
-    return fieldValue;
+    return _fieldValue;
 }

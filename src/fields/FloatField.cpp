@@ -1,15 +1,15 @@
 #include "FloatField.h"
 
-FloatField::FloatField(string name, double defaultValue, bool primary, bool unique, bool nullable): 
-    Field(name, FLOAT, primary, unique, nullable) { 
-    fieldValue = defaultValue;
+FloatField::FloatField(string fieldName, double defaultValue, bool isPrimaryKey, bool isUnique, bool isNullable): 
+    Field(fieldName, FLOAT, isPrimaryKey, isUnique, isNullable) { 
+    _fieldValue = defaultValue;
 } 
 
 void FloatField::setValue(double value) {
     setNull(false);
-    fieldValue = value;
+    _fieldValue = value;
 }
 
 double FloatField::getValue() {
-    return fieldValue;
+    return _fieldValue;
 }

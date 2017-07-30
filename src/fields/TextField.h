@@ -8,10 +8,10 @@ using namespace std;
 class TextField: public Field {
     
     private:
-        string fieldValue;
+        string _fieldValue;
         
     public:
-        TextField(string name, string defaultValue="", bool primary=false, bool unique=false, bool nullable=true);
+        TextField(string fieldName, string defaultValue="", bool isPrimaryKey=false, bool isUnique=false, bool isNullable=true);
         
         void setValue(string value);        
         string getValue();

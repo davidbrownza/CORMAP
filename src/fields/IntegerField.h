@@ -8,11 +8,11 @@ using namespace std;
 class IntegerField: public Field {
     
     private:
-        int fieldValue;
-        bool autoIncrement;
+        int _fieldValue;
+        bool _isAutoIncremented;
         
     public:
-        IntegerField(string name, int defaultValue=0, bool primary=false, bool unique=false, bool nullable=true, bool autoInc=false);
+        IntegerField(string fieldName, int defaultValue=0, bool isPrimaryKey=false, bool isUnique=false, bool isNullable=true, bool isAutoIncremented=false);
         
         void setValue(int value);        
         int getValue();

@@ -6,163 +6,144 @@ Model::Model(string name) {
 }
 
 Model::~Model() {
-    for(vector<Field*>::const_iterator it = fields.begin(); it != fields.end(); it++)
-    {
+    for (vector<Field*>::const_iterator it = fields.begin(); it != fields.end(); it++) {
         delete *it;
     } 
     fields.clear();
 }
 
-IntegerField* Model::integerField(string name, int defaultValue, bool primary, bool unique, bool nullable, bool autoInc)
-{
-    IntegerField * f = new IntegerField(name, defaultValue, primary, unique, nullable, autoInc);
+IntegerField* Model::integerField(string fieldName, int defaultValue, bool isPrimaryKey, bool isUnique, bool isNullable, bool isAutoIncremented) {
+    IntegerField * f = new IntegerField(fieldName, defaultValue, isPrimaryKey, isUnique, isNullable, isAutoIncremented);
     fields.push_back(f);
     
     return f;
 }
 
-FloatField* Model::floatField(string name, double defaultValue, bool primary, bool unique, bool nullable)
-{
-    FloatField * f = new FloatField(name, defaultValue, primary, unique, nullable);
+FloatField* Model::floatField(string fieldName, double defaultValue, bool isPrimaryKey, bool isUnique, bool isNullable) {
+    FloatField * f = new FloatField(fieldName, defaultValue, isPrimaryKey, isUnique, isNullable);
     fields.push_back(f);
     
     return f;
 }
 
-TextField* Model::textField(string name, string defaultValue, bool primary, bool unique, bool nullable)
-{
-    TextField * f = new TextField(name, defaultValue, primary, unique, nullable);
+TextField* Model::textField(string fieldName, string defaultValue, bool isPrimaryKey, bool isUnique, bool isNullable) {
+    TextField * f = new TextField(fieldName, defaultValue, isPrimaryKey, isUnique, isNullable);
     fields.push_back(f);
     
     return f;
 }
 
-CharField* Model::charField(string name, int maxLength, string defaultValue, bool primary, bool unique, bool nullable)
-{
-    CharField * f = new CharField(name, maxLength, defaultValue, primary, unique, nullable);
+CharField* Model::charField(string fieldName, int maxLength, string defaultValue, bool isPrimaryKey, bool isUnique, bool isNullable) {
+    CharField * f = new CharField(fieldName, maxLength, defaultValue, isPrimaryKey, isUnique, isNullable);
     fields.push_back(f);
     
     return f;
 }
 
-BooleanField* Model::booleanField(string name, bool defaultValue, bool primary, bool unique, bool nullable)
-{
-    BooleanField * f = new BooleanField(name, defaultValue, primary, unique, nullable);
+BooleanField* Model::booleanField(string fieldName, bool defaultValue, bool isPrimaryKey, bool isUnique, bool isNullable) {
+    BooleanField * f = new BooleanField(fieldName, defaultValue, isPrimaryKey, isUnique, isNullable);
     fields.push_back(f);
     
     return f;
 }
 
-int Model::insert(Mode mode)
-{
+int Model::insert(Mode mode) {
     vector<Model*> models;
     models.push_back(this);
     
     return insertBatch(models, 1, mode);
 }
 
-int Model::insertBatch(vector<Model*> models, int batchsize, Mode mode)
-{
-    int size = models.size();
+int Model::insertBatch(vector<Model*> models, unsigned int batchsize, Mode mode) {
+    unsigned int size = models.size();
     
-    if(size < batchsize)
+    if (size < batchsize) {
         batchsize = size;
+    }
         
     //workout the size of the last batch
     int rem = size % batchsize;
-    int finalFullBatch = size - rem;    
+    unsigned int finalFullBatch = size - rem;    
     
     //generate SQL 
-    string sqlHead; // INSERT INTO table_name (fields) VALUES
-    string sqlBatch; // (?,?..,?)
-    string sqlUpdate; // ON DUPLICATE KEY UPDATE field=VALUES(field),...
+    string sqlHead; 
+    string sqlBatch; 
+    string sqlUpdate; 
     generateSQLParts(sqlHead, sqlBatch, sqlUpdate, mode);
     
     string sqlTail = generateSQLTail(sqlBatch, sqlUpdate, batchsize, mode);
     
-    //cout << sqlHead + sqlTail << endl;
-    
     //prepare first statement
-    conn.prepareStatement(sqlHead + sqlTail);
+    _connection.prepareStatement(sqlHead + sqlTail);
     
     int paramNum = 0;
-    bool finalBatch = false;
+    bool isFinalBatch = false;
     //iterate through the list of models inserting batches of the specified size
-    for (int i = 0; i < models.size(); i++)
-    {    
+    for (unsigned int i = 0; i < models.size(); i++) {    
         Model * m = models[i];
         //iterate through the list of fields, adding them as parameters
-        for (int j = 0; j < m->fields.size(); j++) {
+        for (unsigned int j = 0; j < m->fields.size(); j++) {
             Field * f = m->fields[j];
             
-            bool ignoreField = f->isAutoFilled();
-        
-            if (!ignoreField) {
+            if (!f->isAutoFilled()) {
                 paramNum++;
                 
                 if (f->isNull()) {
-                    conn.setNull(paramNum);
+                    _connection.setNull(paramNum);
                     continue;
-                } 
+                }
                     
                 switch(f->getType()) {
 
-                    case INTEGER: 
-                    {
+                    case INTEGER: {
                         IntegerField * i = static_cast <IntegerField*>(f);
-                        conn.setInt(paramNum, i->getValue());
+                        _connection.setInt(paramNum, i->getValue());
                         break;
                     }
 
-                    case FLOAT:
-                    {
+                    case FLOAT: {
                         FloatField * i = static_cast <FloatField*>(f);
-                        conn.setDouble(paramNum, i->getValue());
+                        _connection.setDouble(paramNum, i->getValue());
                         break;
                     }
                     
-                    case TEXT:
-                    {
+                    case TEXT: {
                         TextField * i = static_cast <TextField*>(f);
-                        conn.setString(paramNum, i->getValue());
+                        _connection.setString(paramNum, i->getValue());
                         break;
                     }
                     
-                    case CHAR:
-                    {
+                    case CHAR: {
                         CharField * i = static_cast <CharField*>(f);
-                        conn.setString(paramNum, i->getValue());
+                        _connection.setString(paramNum, i->getValue());
                         break;
                     }
 
-                    case BOOLEAN:
-                    {
+                    case BOOLEAN: {
                         BooleanField * i = static_cast <BooleanField*>(f);
-                        conn.setInt(paramNum, i->getValue());
+                        _connection.setInt(paramNum, i->getValue());
                         break;
                     }
                 }
             }
         }
                 
-        if(i+1 == size || !finalBatch && (i+1) % batchsize == 0)
-        {        
-            conn.executeStatement();
+        if (i+1 == size || (!isFinalBatch && (i+1) % batchsize == 0)) {        
+            _connection.executeStatement();
             
             //reset paramNum after execution
             paramNum = 0;
             
             //the final batch will require a prepared statement that is only as long as the remaining no. of models
-            if(i+1 >= finalFullBatch)
-            {
-                finalBatch = true;
+            if (i+1 >= finalFullBatch) {
+                isFinalBatch = true;
                 
                 sqlTail = generateSQLTail(sqlBatch, sqlUpdate, rem, mode);
                 batchsize = rem;
             }
             
-            conn.deleteStatement();         
-            conn.prepareStatement(sqlHead + sqlTail);
+            _connection.deleteStatement();         
+            _connection.prepareStatement(sqlHead + sqlTail);
         }        
     }  
     
@@ -171,23 +152,22 @@ int Model::insertBatch(vector<Model*> models, int batchsize, Mode mode)
 
 
 int Model::truncate() {
-    conn.prepareStatement("TRUNCATE " + tableName);
-    conn.executeStatement();
-    conn.deleteStatement();
+    _connection.prepareStatement("TRUNCATE " + tableName);
+    _connection.executeStatement();
+    _connection.deleteStatement();
     
     return 0;
 }
 
 
-int Model::setConnection(DBConnection connection)
-{    
-    conn = connection;
+int Model::setConnection(DBConnection connection) {    
+    _connection = connection;
     return 0;
 }
 
 
 DBConnection Model::getConnection() {
-    return conn;
+    return _connection;
 }
 
 
@@ -196,27 +176,23 @@ void Model::generateSQLParts(string &sqlHead, string &sqlBatch, string &sqlUpdat
     sqlBatch = "(";
     sqlUpdate = " ON DUPLICATE KEY UPDATE ";
     
-    bool firstField = true;
+    bool isFirstField = true;
     
-    for (int i = 0; i < fields.size(); i++)
-    {
+    for (unsigned int i = 0; i < fields.size(); i++) {
         Field* f = fields[i];
         
-        bool ignoreField = f->isAutoFilled();
-        
-        if (!ignoreField) {
-            if (firstField)
-            {
-                firstField = false;
+        if (!f->isAutoFilled()) {
+            if (isFirstField) {
+                isFirstField = false;
                 
-                sqlFields +=  f->getName();
+                sqlFields += f->getName();
                 sqlBatch += "?";
                 
                 if (mode == UPDATE) {
                     sqlUpdate += f->getName() + " = VALUES(" + f->getName() + ")";
                 }
             } else {
-                sqlFields +=  ", " + f->getName();
+                sqlFields += ", " + f->getName();
                 sqlBatch += ",?";
                 
                 if (mode == UPDATE) {
@@ -229,18 +205,16 @@ void Model::generateSQLParts(string &sqlHead, string &sqlBatch, string &sqlUpdat
     sqlBatch += ")";
     
     if (mode == IGNORE) {
-        sqlHead = "INSERT IGNORE INTO " + tableName + " (" +  sqlFields + ") VALUES ";
+        sqlHead = "INSERT IGNORE INTO " + tableName + " (" + sqlFields + ") VALUES ";
     } else {
-        sqlHead = "INSERT INTO " + tableName + " (" +  sqlFields + ") VALUES ";
+        sqlHead = "INSERT INTO " + tableName + " (" + sqlFields + ") VALUES ";
     }
 }
-
 
 string Model::generateSQLTail(string sqlBatch, string sqlUpdate, int batchsize, Mode mode) {
     string sqlTail = sqlBatch;
     
-    for(int j = 1; j < batchsize; j++)
-    {
+    for (int j = 1; j < batchsize; j++) {
         sqlTail += "," + sqlBatch;
     }
     

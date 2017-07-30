@@ -8,10 +8,10 @@ using namespace std;
 class FloatField: public Field {
     
     private:
-        double fieldValue;
+        double _fieldValue;
         
     public:
-        FloatField(string name, double defaultValue=0, bool primary=false, bool unique=false, bool nullable=true);
+        FloatField(string fieldName, double defaultValue=0, bool isPrimaryKey=false, bool isUnique=false, bool isNullable=true);
         
         void setValue(double value);        
         double getValue();

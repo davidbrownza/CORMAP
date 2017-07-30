@@ -5,21 +5,23 @@
 
 using namespace std;
 
-enum FieldType { INTEGER, FLOAT, TEXT, CHAR, BOOLEAN };
+enum FieldType { 
+    INTEGER, FLOAT, TEXT, CHAR, BOOLEAN 
+};
 
 class Field {
     
     private:
-        string fieldName;
-        FieldType fieldType;
-        bool primaryKey;
-        bool uniqueValue;
-        bool nullable;
+        string _fieldName;
+        FieldType _fieldType;
+        bool _isPrimaryKey;
+        bool _isUnique;
+        bool _isNullable;
         bool _isNull;
-        bool autoFilled;
+        bool _isAutoFilled;
     
     public:
-        Field(string name, FieldType type, bool primary=false, bool unique=false, bool null=true, bool autoF=false);
+        Field(string fieldName, FieldType fieldType, bool isPrimaryKey=false, bool isUnique=false, bool isNullable=true, bool isAutoFilled=false);
         
         string getName();        
         FieldType getType();        
@@ -28,7 +30,7 @@ class Field {
         bool isAutoFilled();        
         bool isNullable();        
         bool isNull();        
-        void setNull(bool null);
+        void setNull(bool isNull);
 };
 
 #endif

@@ -1,8 +1,8 @@
 #include "CharField.h"
 #include <stdexcept>
 
-CharField::CharField(string name, int maxLength, string defaultValue, bool primary, bool unique, bool nullable):
-    Field(name, CHAR, primary, unique, nullable) { 
+CharField::CharField(string fieldName, int maxLength, string defaultValue, bool isPrimaryKey, bool isUnique, bool isNullable):
+    Field(fieldName, CHAR, isPrimaryKey, isUnique, isNullable) { 
     _fieldValue = defaultValue;
     _maxLength = maxLength;
 } 

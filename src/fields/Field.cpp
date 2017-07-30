@@ -1,42 +1,42 @@
 #include "Field.h"
 
-Field::Field(string name, FieldType type, bool primary, bool unique, bool null, bool autoF) {
-    fieldName = name;
-    fieldType = type;
-    primaryKey = primaryKey;
-    uniqueValue = unique;
-    nullable = null;
-    autoFilled = autoF;
+Field::Field(string fieldName, FieldType fieldType, bool isPrimaryKey, bool isUnique, bool isNullable, bool isAutoFilled) {
+    _fieldName = fieldName;
+    _fieldType = fieldType;
+    _isPrimaryKey = isPrimaryKey;
+    _isUnique = isUnique;
+    _isNullable = isNullable;
+    _isAutoFilled = isAutoFilled;
 }
 
 string Field::getName() {
-    return fieldName;
+    return _fieldName;
 }
 
 FieldType Field::getType() {
-    return fieldType;
+    return _fieldType;
 }
 
 bool Field::isUnique() {
-    return uniqueValue;
+    return _isUnique;
 }
 
 bool Field::isPrimaryKey() {
-    return primaryKey;
+    return _isPrimaryKey;
 }
 
 bool Field::isAutoFilled() {
-    return autoFilled;
+    return _isAutoFilled;
 }
 
 bool Field::isNullable() {
-    return nullable;
+    return _isNullable;
 }
 
 bool Field::isNull() {
     return _isNull;
 }
 
-void Field::setNull(bool null) {
-    _isNull = null;
+void Field::setNull(bool isNull) {
+    _isNull = isNull;
 }
