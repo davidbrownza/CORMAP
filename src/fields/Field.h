@@ -18,10 +18,10 @@ class Field {
         bool _isUnique;
         bool _isNullable;
         bool _isNull;
-        bool _autoFilled;
+        bool _isAutoFilled;
     
     public:
-        Field(string fieldName, FieldType fieldType, bool isPrimaryKey=false, bool isUnique=false, bool isNullable=true, bool autoFilled=false);
+        Field(string fieldName, FieldType fieldType, bool isPrimaryKey=false, bool isUnique=false, bool isNullable=true, bool isAutoFilled=false);
         
         string getName();        
         FieldType getType();        
@@ -30,7 +30,7 @@ class Field {
         bool isAutoFilled();        
         bool isNullable();        
         bool isNull();        
-        void setNull(bool null);
+        void setNull(bool isNull);
 };
 
 #endif

@@ -12,8 +12,8 @@ Model::~Model() {
     fields.clear();
 }
 
-IntegerField* Model::integerField(string fieldName, int defaultValue, bool isPrimaryKey, bool isUnique, bool isNullable, bool autoIncrement) {
-    IntegerField * f = new IntegerField(fieldName, defaultValue, isPrimaryKey, isUnique, isNullable, autoIncrement);
+IntegerField* Model::integerField(string fieldName, int defaultValue, bool isPrimaryKey, bool isUnique, bool isNullable, bool isAutoIncremented) {
+    IntegerField * f = new IntegerField(fieldName, defaultValue, isPrimaryKey, isUnique, isNullable, isAutoIncremented);
     fields.push_back(f);
     
     return f;
@@ -73,13 +73,11 @@ int Model::insertBatch(vector<Model*> models, unsigned int batchsize, Mode mode)
     
     string sqlTail = generateSQLTail(sqlBatch, sqlUpdate, batchsize, mode);
     
-    //cout << sqlHead + sqlTail << endl;
-    
     //prepare first statement
     _connection.prepareStatement(sqlHead + sqlTail);
     
     int paramNum = 0;
-    bool finalBatch = false;
+    bool isFinalBatch = false;
     //iterate through the list of models inserting batches of the specified size
     for (unsigned int i = 0; i < models.size(); i++) {    
         Model * m = models[i];
@@ -87,9 +85,7 @@ int Model::insertBatch(vector<Model*> models, unsigned int batchsize, Mode mode)
         for (unsigned int j = 0; j < m->fields.size(); j++) {
             Field * f = m->fields[j];
             
-            bool ignoreField = f->isAutoFilled();
-        
-            if (!ignoreField) {
+            if (!f->isAutoFilled()) {
                 paramNum++;
                 
                 if (f->isNull()) {
@@ -132,7 +128,7 @@ int Model::insertBatch(vector<Model*> models, unsigned int batchsize, Mode mode)
             }
         }
                 
-        if (i+1 == size || (!finalBatch && (i+1) % batchsize == 0)) {        
+        if (i+1 == size || (!isFinalBatch && (i+1) % batchsize == 0)) {        
             _connection.executeStatement();
             
             //reset paramNum after execution
@@ -140,7 +136,7 @@ int Model::insertBatch(vector<Model*> models, unsigned int batchsize, Mode mode)
             
             //the final batch will require a prepared statement that is only as long as the remaining no. of models
             if (i+1 >= finalFullBatch) {
-                finalBatch = true;
+                isFinalBatch = true;
                 
                 sqlTail = generateSQLTail(sqlBatch, sqlUpdate, rem, mode);
                 batchsize = rem;
@@ -180,16 +176,14 @@ void Model::generateSQLParts(string &sqlHead, string &sqlBatch, string &sqlUpdat
     sqlBatch = "(";
     sqlUpdate = " ON DUPLICATE KEY UPDATE ";
     
-    bool firstField = true;
+    bool isFirstField = true;
     
     for (unsigned int i = 0; i < fields.size(); i++) {
         Field* f = fields[i];
         
-        bool ignoreField = f->isAutoFilled();
-        
-        if (!ignoreField) {
-            if (firstField) {
-                firstField = false;
+        if (!f->isAutoFilled()) {
+            if (isFirstField) {
+                isFirstField = false;
                 
                 sqlFields += f->getName();
                 sqlBatch += "?";

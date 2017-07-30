@@ -1,12 +1,12 @@
 #include "Field.h"
 
-Field::Field(string fieldName, FieldType fieldType, bool isPrimaryKey, bool isUnique, bool isNullable, bool autoFilled) {
+Field::Field(string fieldName, FieldType fieldType, bool isPrimaryKey, bool isUnique, bool isNullable, bool isAutoFilled) {
     _fieldName = fieldName;
     _fieldType = fieldType;
     _isPrimaryKey = isPrimaryKey;
     _isUnique = isUnique;
     _isNullable = isNullable;
-    _autoFilled = autoFilled;
+    _isAutoFilled = isAutoFilled;
 }
 
 string Field::getName() {
@@ -26,7 +26,7 @@ bool Field::isPrimaryKey() {
 }
 
 bool Field::isAutoFilled() {
-    return _autoFilled;
+    return _isAutoFilled;
 }
 
 bool Field::isNullable() {
@@ -37,6 +37,6 @@ bool Field::isNull() {
     return _isNull;
 }
 
-void Field::setNull(bool null) {
-    _isNull = null;
+void Field::setNull(bool isNull) {
+    _isNull = isNull;
 }

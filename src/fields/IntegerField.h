@@ -9,10 +9,10 @@ class IntegerField: public Field {
     
     private:
         int _fieldValue;
-        bool _autoIncrement;
+        bool _isAutoIncremented;
         
     public:
-        IntegerField(string fieldName, int defaultValue=0, bool isPrimaryKey=false, bool isUnique=false, bool isNullable=true, bool autoIncrement=false);
+        IntegerField(string fieldName, int defaultValue=0, bool isPrimaryKey=false, bool isUnique=false, bool isNullable=true, bool isAutoIncremented=false);
         
         void setValue(int value);        
         int getValue();

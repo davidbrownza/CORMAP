@@ -28,11 +28,11 @@ class Model {
         Model(string name);
         ~Model();
         
-        IntegerField* integerField(string fieldName, int defaultValue=0, bool isPrimaryKey=false, bool isUnique=false, bool isNullable=true, bool autoIncrement=false);
+        IntegerField* integerField(string fieldName, int defaultValue=0, bool isPrimaryKey=false, bool isUnique=false, bool isNullable=true, bool isAutoIncremented=false);
         FloatField* floatField(string fieldName, double defaultValue=0, bool isPrimaryKey=false, bool isUnique=false, bool isNullable=true);
         TextField* textField(string fieldName, string defaultValue="", bool isPrimaryKey=false, bool isUnique=false, bool isNullable=true);
         CharField* charField(string fieldName, int maxLength, string defaultValue="", bool isPrimaryKey=false, bool isUnique=false, bool isNullable=true);
-        BooleanField* booleanField(string fieldName, bool defaultValue=false, bool isPrimaryKey=false, bool isUnique=false, bool nullable=true);
+        BooleanField* booleanField(string fieldName, bool defaultValue=false, bool isPrimaryKey=false, bool isUnique=false, bool isNullable=true);
          
         int insert(Mode mode=UPDATE);
         int insertBatch(vector<Model*> models, unsigned int batchsize=100, Mode mode=UPDATE);
