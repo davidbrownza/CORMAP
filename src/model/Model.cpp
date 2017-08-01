@@ -91,39 +91,8 @@ int Model::insertBatch(vector<Model*> models, unsigned int batchsize, Mode mode)
                 if (f->isNull()) {
                     _connection.setNull(paramNum);
                     continue;
-                }
-                    
-                switch(f->getType()) {
-
-                    case INTEGER: {
-                        IntegerField * i = static_cast <IntegerField*>(f);
-                        _connection.setInt(paramNum, i->getValue());
-                        break;
-                    }
-
-                    case FLOAT: {
-                        FloatField * i = static_cast <FloatField*>(f);
-                        _connection.setDouble(paramNum, i->getValue());
-                        break;
-                    }
-                    
-                    case TEXT: {
-                        TextField * i = static_cast <TextField*>(f);
-                        _connection.setString(paramNum, i->getValue());
-                        break;
-                    }
-                    
-                    case CHAR: {
-                        CharField * i = static_cast <CharField*>(f);
-                        _connection.setString(paramNum, i->getValue());
-                        break;
-                    }
-
-                    case BOOLEAN: {
-                        BooleanField * i = static_cast <BooleanField*>(f);
-                        _connection.setInt(paramNum, i->getValue());
-                        break;
-                    }
+                } else {
+                    f->setParameter(paramNum, _connection);
                 }
             }
         }
