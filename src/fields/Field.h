@@ -34,11 +34,7 @@ class Field {
         bool isNull();        
         void setNull(bool isNull);
 
-        virtual void setParameter(int parameterNumber, DBConnection connection);
-    
-    // protected:
-        
-    //     DBConnection _connection;
+        virtual void setParameter(int parameterNumber, DBConnection connection) = 0;
 };
 
 #endif
