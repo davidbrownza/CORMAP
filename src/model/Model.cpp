@@ -90,7 +90,6 @@ int Model::insertBatch(vector<Model*> models, unsigned int batchsize, Mode mode)
                 
                 if (f->isNull()) {
                     _connection.setNull(paramNum);
-                    continue;
                 } else {
                     f->setParameter(paramNum, _connection);
                 }
