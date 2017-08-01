@@ -1,6 +1,8 @@
 #ifndef FIELD_H
 #define FIELD_H
 
+#include "../conn/DBConnection.h"
+
 #include <string>
 
 using namespace std;
@@ -31,6 +33,12 @@ class Field {
         bool isNullable();        
         bool isNull();        
         void setNull(bool isNull);
+
+        virtual void setParameter(int parameterNumber, DBConnection connection);
+    
+    // protected:
+        
+    //     DBConnection _connection;
 };
 
 #endif

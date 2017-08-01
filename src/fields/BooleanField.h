@@ -15,6 +15,8 @@ class BooleanField: public Field {
         
         void setValue(bool value);
         bool getValue();
+        
+        void setParameter(int parameterNumber, DBConnection connection);
 };
 
 #endif

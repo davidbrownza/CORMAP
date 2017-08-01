@@ -15,6 +15,8 @@ class FloatField: public Field {
         
         void setValue(double value);        
         double getValue();
+
+        void setParameter(int parameterNumber, DBConnection connection);
 };
 
 #endif

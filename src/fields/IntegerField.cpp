@@ -14,3 +14,7 @@ void IntegerField::setValue(int value) {
 int IntegerField::getValue() {
     return _fieldValue;
 }
+
+void IntegerField::setParameter(int parameterNumber, DBConnection connection) {
+    connection.setInt(parameterNumber, getValue());
+}

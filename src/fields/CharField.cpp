@@ -27,3 +27,7 @@ string CharField::checkMaxLength(string newValue) {
     }
     return newValue;            
 }
+
+void CharField::setParameter(int parameterNumber, DBConnection connection) {
+    connection.setString(parameterNumber, getValue());
+}

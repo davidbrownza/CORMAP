@@ -13,3 +13,7 @@ void BooleanField::setValue(bool value) {
 bool BooleanField::getValue() {
     return _fieldValue;
 }
+
+void BooleanField::setParameter(int parameterNumber, DBConnection connection) {
+    connection.setInt(parameterNumber, getValue());
+}

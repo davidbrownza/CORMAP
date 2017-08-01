@@ -20,6 +20,8 @@ class CharField: public Field {
 
         int getMaxLength();
         string checkMaxLength(string newValue);
+
+        void setParameter(int parameterNumber, DBConnection connection);
 };
 
 #endif

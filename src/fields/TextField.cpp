@@ -13,3 +13,7 @@ void TextField::setValue(string value) {
 string TextField::getValue() {
     return _fieldValue;
 }
+
+void TextField::setParameter(int parameterNumber, DBConnection connection) {
+    connection.setString(parameterNumber, getValue());
+}

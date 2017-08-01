@@ -15,6 +15,8 @@ class TextField: public Field {
         
         void setValue(string value);        
         string getValue();
+        
+        void setParameter(int parameterNumber, DBConnection connection);
 };
 
 #endif

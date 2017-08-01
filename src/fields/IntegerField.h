@@ -16,6 +16,8 @@ class IntegerField: public Field {
         
         void setValue(int value);        
         int getValue();
+        
+        void setParameter(int parameterNumber, DBConnection connection);
 };
 
 #endif
