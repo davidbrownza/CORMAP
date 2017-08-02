@@ -2,10 +2,10 @@
 #include <stdexcept>
 
 CharField::CharField(string fieldName, int maxLength, string defaultValue, bool isPrimaryKey, bool isUnique, bool isNullable):
-    Field(fieldName, CHAR, isPrimaryKey, isUnique, isNullable) { 
+    Field(fieldName, CHAR, isPrimaryKey, isUnique, isNullable) {
     _fieldValue = defaultValue;
     _maxLength = maxLength;
-} 
+}
 
 void CharField::setValue(string value) {
     setNull(false);
@@ -25,5 +25,9 @@ string CharField::checkMaxLength(string newValue) {
     if (newValue.length() > _maxLength) {
         throw length_error("Field value exeeds the maximum allowed length");
     }
-    return newValue;            
+    return newValue;
+}
+
+void CharField::setParameter(int parameterNumber, DBConnection connection) {
+    connection.setString(parameterNumber, getValue());
 }
