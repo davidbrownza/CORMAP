@@ -2,7 +2,10 @@ language: cpp
 compiler:
   - gcc
   - clang
+services:
+  - mysql
 before_install:
+  - mysql -e 'CREATE DATABASE IF NOT EXISTS test;'
   - sudo apt-get install -y libmysqlcppconn-dev
   - cd tst
 install: make
