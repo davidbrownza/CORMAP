@@ -21,6 +21,13 @@ void IntegerField::setParameter(int parameterNumber, DBConnection connection) {
     connection.setInt(parameterNumber, getValue());
 }
 
-string IntegerField::generateTableSQL() {
-    return getName() + " INTEGER DEFAULT " + to_string(_defaultValue);
+string IntegerField::generateColumnSQL() {
+    string fieldType = " INTEGER";
+
+    string defaultValue = "";
+    if (isAutoFilled() == true) {
+         defaultValue = " DEFAULT " + to_string(_defaultValue);
+    }
+
+    return getName() + fieldType + defaultValue;
 }

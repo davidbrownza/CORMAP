@@ -19,7 +19,7 @@ class IntegerField: public Field {
         int getValue();
 
         void setParameter(int parameterNumber, DBConnection connection);
-        string generateTableSQL();
+        string generateColumnSQL();
 };
 
 #endif

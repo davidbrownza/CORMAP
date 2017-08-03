@@ -65,7 +65,6 @@ int Model::insertBatch(vector<Model*> models, unsigned int batchsize, Mode mode)
     int rem = size % batchsize;
     unsigned int finalFullBatch = size - rem;
 
-    //generate SQL
     string sqlHead;
     string sqlBatch;
     string sqlUpdate;
@@ -73,7 +72,6 @@ int Model::insertBatch(vector<Model*> models, unsigned int batchsize, Mode mode)
 
     string sqlTail = generateSQLTail(sqlBatch, sqlUpdate, batchsize, mode);
 
-    //prepare first statement
     _connection.prepareStatement(sqlHead + sqlTail);
 
     int paramNum = 0;
@@ -129,23 +127,19 @@ int Model::truncate() {
 int Model::createTable() {
     string sql = "CREATE TABLE IF NOT EXISTS " + tableName;
 
-    // sql += " (";
+    sql += " (";
 
-    // string primaryKey = "";
-    // for (unsigned int i = 0; i < fields.size(); i++) {
-    //     Field * f = fields[i];
-    //     sql += f->generateTableSQL();
+    string primaryKey = "";
+    for (unsigned int i = 0; i < fields.size(); i++) {
+        Field * f = fields[i];
+        sql += f->generateColumnSQL();
 
-    //     if (i - 1 < fields.size()) {
-    //         sql += ",";
-    //     }
-    // }
+        if (i < fields.size() - 1) {
+            sql += ", ";
+        }
+    }
 
-    // sql += primaryKey + ");";
-
-    sql += " (Protein_ID INTEGER DEFAULT 0,Protein_Chain VARCHAR(5),Protein_Name LONGTEXT,Protein_IsDrugTarget TINYINT(1) DEFAULT 0)";
-
-    cout << sql << endl;
+    sql += primaryKey + ");";
 
     _connection.prepareStatement(sql);
     _connection.executeStatement();
@@ -169,11 +163,9 @@ int Model::setConnection(DBConnection connection) {
     return 0;
 }
 
-
 DBConnection Model::getConnection() {
     return _connection;
 }
-
 
 void Model::generateSQLParts(string &sqlHead, string &sqlBatch, string &sqlUpdate, Mode mode) {
     string sqlFields = "";

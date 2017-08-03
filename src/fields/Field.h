@@ -36,7 +36,7 @@ class Field {
         void setNull(bool isNull);
 
         virtual void setParameter(int parameterNumber, DBConnection connection) = 0;
-        virtual string generateTableSQL() = 0;
+        virtual string generateColumnSQL() = 0;
 };
 
 #endif
