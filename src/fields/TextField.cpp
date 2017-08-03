@@ -3,6 +3,7 @@
 TextField::TextField(string fieldName, string defaultValue, bool isPrimaryKey, bool isUnique, bool isNullable):
     Field(fieldName, TEXT, isPrimaryKey, isUnique, isNullable) {
     _fieldValue = defaultValue;
+    _defaultValue = defaultValue;
 }
 
 void TextField::setValue(string value) {
@@ -16,4 +17,8 @@ string TextField::getValue() {
 
 void TextField::setParameter(int parameterNumber, DBConnection connection) {
     connection.setString(parameterNumber, getValue());
+}
+
+string TextField::generateTableSQL() {
+    return getName() + " LONGTEXT DEFAULT " + _defaultValue;
 }

@@ -4,6 +4,7 @@
 CharField::CharField(string fieldName, int maxLength, string defaultValue, bool isPrimaryKey, bool isUnique, bool isNullable):
     Field(fieldName, CHAR, isPrimaryKey, isUnique, isNullable) {
     _fieldValue = defaultValue;
+    _defaultValue = defaultValue;
     _maxLength = maxLength;
 }
 
@@ -30,4 +31,8 @@ string CharField::checkMaxLength(string newValue) {
 
 void CharField::setParameter(int parameterNumber, DBConnection connection) {
     connection.setString(parameterNumber, getValue());
+}
+
+string CharField::generateTableSQL() {
+    return getName() + " VARCHAR(" + to_string(_maxLength) + ") DEFAULT " + _defaultValue;
 }

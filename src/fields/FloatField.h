@@ -9,6 +9,7 @@ class FloatField: public Field {
 
     private:
         double _fieldValue;
+        double _defaultValue;
 
     public:
         FloatField(string fieldName, double defaultValue=0, bool isPrimaryKey=false, bool isUnique=false, bool isNullable=true);
@@ -17,6 +18,7 @@ class FloatField: public Field {
         double getValue();
 
         void setParameter(int parameterNumber, DBConnection connection);
+        string generateTableSQL();
 };
 
 #endif

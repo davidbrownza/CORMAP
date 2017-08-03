@@ -118,7 +118,6 @@ int Model::insertBatch(vector<Model*> models, unsigned int batchsize, Mode mode)
     return 0;
 }
 
-
 int Model::truncate() {
     _connection.prepareStatement("TRUNCATE " + tableName);
     _connection.executeStatement();
@@ -127,6 +126,41 @@ int Model::truncate() {
     return 0;
 }
 
+int Model::createTable() {
+    string sql = "CREATE TABLE IF NOT EXISTS " + tableName;
+
+    // sql += " (";
+
+    // string primaryKey = "";
+    // for (unsigned int i = 0; i < fields.size(); i++) {
+    //     Field * f = fields[i];
+    //     sql += f->generateTableSQL();
+
+    //     if (i - 1 < fields.size()) {
+    //         sql += ",";
+    //     }
+    // }
+
+    // sql += primaryKey + ");";
+
+    sql += " (Protein_ID INTEGER DEFAULT 0,Protein_Chain VARCHAR(5),Protein_Name LONGTEXT,Protein_IsDrugTarget TINYINT(1) DEFAULT 0)";
+
+    cout << sql << endl;
+
+    _connection.prepareStatement(sql);
+    _connection.executeStatement();
+    _connection.deleteStatement();
+
+    return 0;
+}
+
+int Model::dropTable() {
+    string sql = "DROP TABLE IF EXISTS " + tableName;
+
+    _connection.prepareStatement(sql);
+    _connection.executeStatement();
+    _connection.deleteStatement();
+}
 
 int Model::setConnection(DBConnection connection) {
     _connection = connection;

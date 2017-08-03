@@ -3,6 +3,7 @@
 IntegerField::IntegerField(string fieldName, int defaultValue, bool isPrimaryKey, bool isUnique, bool isNullable, bool isAutoIncremented):
     Field(fieldName, INTEGER, isPrimaryKey, isUnique, isNullable, isAutoIncremented) {
     _fieldValue = defaultValue;
+    _defaultValue = defaultValue;
     _isAutoIncremented = isAutoIncremented;
 }
 
@@ -17,4 +18,8 @@ int IntegerField::getValue() {
 
 void IntegerField::setParameter(int parameterNumber, DBConnection connection) {
     connection.setInt(parameterNumber, getValue());
+}
+
+string IntegerField::generateTableSQL() {
+    return getName() + " INTEGER DEFAULT " + to_string(_defaultValue);
 }

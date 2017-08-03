@@ -40,6 +40,9 @@ class Model {
 
         template<typename T> Model* getByID(T pk_value);
 
+        int createTable();
+        int dropTable();
+
         int setConnection(DBConnection connection);
         DBConnection getConnection();
 
