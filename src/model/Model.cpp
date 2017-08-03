@@ -178,7 +178,7 @@ void Model::generateSQLParts(string &sqlHead, string &sqlBatch, string &sqlUpdat
     }
 }
 
-string Model::generateSQLTail(string sqlBatch, string &sqlUpdate, int batchsize, Mode mode) {
+string Model::generateSQLTail(string &sqlBatch, string &sqlUpdate, int batchsize, Mode mode) {
     string sqlTail = sqlBatch;
 
     for (int j = 1; j < batchsize; j++) {

@@ -13,7 +13,7 @@ class CharField: public Field {
         unsigned int _maxLength;
 
     public:
-        CharField(string &fieldName, int maxLength, string defaultValue="", bool isPrimaryKey=false, bool isUnique=false, bool isNullable=true);
+        CharField(string fieldName, int maxLength, string defaultValue="", bool isPrimaryKey=false, bool isUnique=false, bool isNullable=true);
 
         void setValue(string value);
         string getValue();

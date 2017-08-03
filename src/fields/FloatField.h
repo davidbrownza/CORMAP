@@ -11,7 +11,7 @@ class FloatField: public Field {
         double _fieldValue;
 
     public:
-        FloatField(string &fieldName, double defaultValue=0, bool isPrimaryKey=false, bool isUnique=false, bool isNullable=true);
+        FloatField(string fieldName, double defaultValue=0, bool isPrimaryKey=false, bool isUnique=false, bool isNullable=true);
 
         void setValue(double value);
         double getValue();
