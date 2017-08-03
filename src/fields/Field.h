@@ -23,7 +23,7 @@ class Field {
         bool _isAutoFilled;
 
     public:
-        Field(string fieldName, FieldType fieldType, bool isPrimaryKey=false, bool isUnique=false, bool isNullable=true, bool isAutoFilled=false);
+        Field(string &fieldName, FieldType fieldType, bool isPrimaryKey=false, bool isUnique=false, bool isNullable=true, bool isAutoFilled=false);
 
         string getName();
         FieldType getType();

@@ -22,7 +22,7 @@ class Model {
 
     private:
         void generateSQLParts(string &sqlHead, string &sqlBatch, string &sqlUpdate, Mode mode);
-        string generateSQLTail(string sqlBatch, string sqlUpdate, int batchsize, Mode mode);
+        string generateSQLTail(string sqlBatch, string &sqlUpdate, int batchsize, Mode mode);
 
     public:
         Model(string name);
