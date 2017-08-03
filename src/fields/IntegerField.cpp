@@ -1,4 +1,5 @@
 #include "IntegerField.h"
+#include <string>
 
 IntegerField::IntegerField(string fieldName, int defaultValue, bool isPrimaryKey, bool isUnique, bool isNullable, bool isAutoIncremented):
     Field(fieldName, INTEGER, isPrimaryKey, isUnique, isNullable, isAutoIncremented) {
