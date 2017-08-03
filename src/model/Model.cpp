@@ -159,6 +159,8 @@ int Model::dropTable() {
     _connection.prepareStatement(sql);
     _connection.executeStatement();
     _connection.deleteStatement();
+
+    return 0;
 }
 
 int Model::setConnection(DBConnection connection) {
