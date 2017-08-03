@@ -17,7 +17,8 @@ void BooleanField::setParameter(int parameterNumber, DBConnection connection) {
     connection.setInt(parameterNumber, getValue());
 }
 
-string BooleanField::generateTableSQL() {
-    string value = _defaultValue == true ? "1" : "0";
-    return getName() + " TINYINT(1) DEFAULT " + value;
+string BooleanField::generateColumnSQL() {
+    string fieldType = " TINYINT(1)";
+    string defaultValue = _defaultValue == true ? " DEFAULT 1" : " DEFAULT 0";
+    return getName() + fieldType + defaultValue;
 }

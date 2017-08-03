@@ -18,7 +18,7 @@ class BooleanField: public Field {
         bool getValue();
 
         void setParameter(int parameterNumber, DBConnection connection);
-        string generateTableSQL();
+        string generateColumnSQL();
 };
 
 #endif

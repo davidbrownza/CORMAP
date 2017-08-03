@@ -16,6 +16,13 @@ void TextField::setParameter(int parameterNumber, DBConnection connection) {
     connection.setString(parameterNumber, getValue());
 }
 
-string TextField::generateTableSQL() {
-    return getName() + " LONGTEXT DEFAULT " + _defaultValue;
+string TextField::generateColumnSQL() {
+    string fieldType = " LONGTEXT";
+
+    string defaultValue = "";
+    if (isAutoFilled() == true) {
+         defaultValue = " DEFAULT '" + _defaultValue + "'";
+    }
+
+    return getName() + fieldType + defaultValue;
 }
