@@ -9,6 +9,7 @@ class BooleanField: public Field {
 
     private:
         bool _fieldValue;
+        bool _defaultValue;
 
     public:
         BooleanField(string fieldName, bool defaultValue=false, bool isPrimaryKey=false, bool isUnique=false, bool isNullable=true);
@@ -17,6 +18,7 @@ class BooleanField: public Field {
         bool getValue();
 
         void setParameter(int parameterNumber, DBConnection connection);
+        string generateTableSQL();
 };
 
 #endif

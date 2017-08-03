@@ -3,3 +3,4 @@
 *.gch
 test
 .vscode
+tst/test.dSYM

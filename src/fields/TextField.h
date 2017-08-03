@@ -9,6 +9,7 @@ class TextField: public Field {
 
     private:
         string _fieldValue;
+        string _defaultValue;
 
     public:
         TextField(string fieldName, string defaultValue="", bool isPrimaryKey=false, bool isUnique=false, bool isNullable=true);
@@ -17,6 +18,7 @@ class TextField: public Field {
         string getValue();
 
         void setParameter(int parameterNumber, DBConnection connection);
+        string generateTableSQL();
 };
 
 #endif

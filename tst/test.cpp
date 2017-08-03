@@ -15,13 +15,22 @@ class Protein: public Model {
 
 //main method
 int main(int argc, const char* argv[] ) {
+    DBConnection conn;
+    conn.connectDB("127.0.0.1", "root", "", "test");
+
     Protein m;
+    m.setConnection(conn);
+
+    m.dropTable();
+    m.createTable();
+
     m.proteinID->setValue(1);
     //m.proteinChain->setValue("charactergreaterthan5"); //should throw an exception
     m.proteinChain->setValue("A");
     m.proteinName->setValue("Name");
     m.proteinIsDrugTarget->setValue(true);
 
+    m.insert();
 
     cout << m.tableName << endl;
     cout << m.proteinID->getValue() << " " << m.proteinID->getName() << endl;
