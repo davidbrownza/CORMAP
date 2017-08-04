@@ -6,7 +6,7 @@ LFLAGS = -std=c++11 -Wall $(DEBUG)
 test : $(OBJS)
 	$(CXX) $(LFLAGS) $(OBJS) -o test -lmysqlcppconn
 
-DBConnection.o : ../src/conn/DBConnection.h ../src/conn/DBConnection.cpp 
+DBConnection.o : ../src/conn/DBConnection.h ../src/conn/DBConnection.cpp
 	$(CXX) $(CFLAGS) ../src/conn/DBConnection.cpp
 
 Model.o : ../src/model/Model.h ../src/model/Model.cpp ../src/conn/DBConnection.h ../src/fields/IntegerField.h ../src/fields/FloatField.h ../src/fields/CharField.h ../src/fields/TextField.h ../src/fields/BooleanField.h
