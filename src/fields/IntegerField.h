@@ -9,6 +9,7 @@ class IntegerField: public Field {
 
     private:
         int _fieldValue;
+        int _defaultValue;
         bool _isAutoIncremented;
 
     public:
@@ -18,6 +19,7 @@ class IntegerField: public Field {
         int getValue();
 
         void setParameter(int parameterNumber, DBConnection connection);
+        string generateColumnSQL();
 };
 
 #endif

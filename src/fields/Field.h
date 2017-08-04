@@ -24,7 +24,8 @@ class Field {
 
     public:
         Field(string fieldName, FieldType fieldType, bool isPrimaryKey=false, bool isUnique=false, bool isNullable=true, bool isAutoFilled=false);
-
+        virtual ~Field() {};
+        
         string getName();
         FieldType getType();
         bool isUnique();
@@ -35,6 +36,7 @@ class Field {
         void setNull(bool isNull);
 
         virtual void setParameter(int parameterNumber, DBConnection connection) = 0;
+        virtual string generateColumnSQL() = 0;
 };
 
 #endif
