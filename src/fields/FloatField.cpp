@@ -1,7 +1,7 @@
 #include "FloatField.h"
 
 FloatField::FloatField(string fieldName, double defaultValue, bool isPrimaryKey, bool isUnique, bool isNullable, bool isAutoFilled):
-    Field(fieldName, FLOAT, isPrimaryKey, isUnique, isNullable), _fieldValue(defaultValue), _defaultValue(defaultValue) {}
+    Field(fieldName, FLOAT, isPrimaryKey, isUnique, isNullable, isAutoFilled), _fieldValue(defaultValue), _defaultValue(defaultValue) {}
 
 void FloatField::setValue(double value) {
     setNull(false);

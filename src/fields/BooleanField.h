@@ -12,7 +12,7 @@ class BooleanField: public Field {
         bool _defaultValue;
 
     public:
-        BooleanField(string fieldName, bool defaultValue=false, bool isPrimaryKey=false, bool isUnique=false, bool isNullable=true);
+        BooleanField(string fieldName, bool defaultValue=false, bool isPrimaryKey=false, bool isUnique=false, bool isNullable=true, bool isAutoFilled=true);
 
         void setValue(bool value);
         bool getValue();

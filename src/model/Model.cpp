@@ -1,7 +1,7 @@
 #include "Model.h"
 #include <iostream>
 
-Model::Model(string name) :
+Model::Model(string name):
     tableName(name) {}
 
 Model::~Model() {
@@ -61,24 +61,20 @@ int Model::insertBatch(vector<Model*> models, unsigned int batchsize, Mode mode)
     }
 
     //workout the size of the last batch
-    int rem = size % batchsize;
-    unsigned int finalFullBatch = size - rem;
+    int finalBatchSize = size % batchsize;
+    unsigned int finalBatchStartIndex = size - finalBatchSize;
 
-    string sqlHead;
-    string sqlBatch;
-    string sqlUpdate;
+    string sqlHead, sqlBatch, sqlUpdate, sqlTail;
+
     generateSQLParts(sqlHead, sqlBatch, sqlUpdate, mode);
-
-    string sqlTail = generateSQLTail(sqlBatch, sqlUpdate, batchsize, mode);
+    sqlTail = generateSQLTail(sqlBatch, sqlUpdate, batchsize, mode);
 
     _connection.prepareStatement(sqlHead + sqlTail);
 
-    int paramNum = 0;
-    bool isFinalBatch = false;
-    //iterate through the list of models inserting batches of the specified size
+    int paramNum = 0;    
     for (unsigned int i = 0; i < models.size(); i++) {
         Model * m = models[i];
-        //iterate through the list of fields, adding them as parameters
+        
         for (unsigned int j = 0; j < m->fields.size(); j++) {
             Field * f = m->fields[j];
 
@@ -93,18 +89,15 @@ int Model::insertBatch(vector<Model*> models, unsigned int batchsize, Mode mode)
             }
         }
 
-        if (i+1 == size || (isFinalBatch == false && (i+1) % batchsize == 0)) {
+        // when we reach the batch size, execute the current statement and prepare the next
+        if (i+1 % batchsize == 0) {
             _connection.executeStatement();
 
-            //reset paramNum after execution
             paramNum = 0;
 
-            //the final batch will require a prepared statement that is only as long as the remaining no. of models
-            if (i+1 >= finalFullBatch) {
-                isFinalBatch = true;
-
-                sqlTail = generateSQLTail(sqlBatch, sqlUpdate, rem, mode);
-                batchsize = rem;
+            if (i+1 >= finalBatchStartIndex) {
+                batchsize = finalBatchSize;
+                sqlTail = generateSQLTail(sqlBatch, sqlUpdate, batchsize, mode);
             }
 
             _connection.deleteStatement();
