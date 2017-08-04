@@ -1,6 +1,6 @@
 #include "TextField.h"
 
-TextField::TextField(string fieldName, string defaultValue, bool isPrimaryKey, bool isUnique, bool isNullable):
+TextField::TextField(string fieldName, string defaultValue, bool isPrimaryKey, bool isUnique, bool isNullable, bool isAutoFilled):
     Field(fieldName, TEXT, isPrimaryKey, isUnique, isNullable), _fieldValue(defaultValue), _defaultValue(defaultValue) {}
 
 void TextField::setValue(string value) {

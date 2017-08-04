@@ -1,7 +1,7 @@
 OBJS = test.cpp Model.o Field.o IntegerField.o FloatField.o CharField.o TextField.o BooleanField.o DBConnection.o
 DEBUG = -g
-CFLAGS = -Wall -c $(DEBUG)
-LFLAGS = -Wall $(DEBUG)
+CFLAGS = -std=c++11 -Wall -c $(DEBUG)
+LFLAGS = -std=c++11 -Wall $(DEBUG)
 
 test : $(OBJS)
 	$(CXX) $(LFLAGS) $(OBJS) -o test -lmysqlcppconn

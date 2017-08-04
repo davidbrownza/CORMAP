@@ -24,7 +24,8 @@ class Field {
 
     public:
         Field(string fieldName, FieldType fieldType, bool isPrimaryKey=false, bool isUnique=false, bool isNullable=true, bool isAutoFilled=false);
-
+        virtual ~Field() {};
+        
         string getName();
         FieldType getType();
         bool isUnique();
