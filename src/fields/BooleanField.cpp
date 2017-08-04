@@ -1,9 +1,7 @@
 #include "BooleanField.h"
 
 BooleanField::BooleanField(string fieldName, bool defaultValue, bool isPrimaryKey, bool isUnique, bool isNullable):
-    Field(fieldName, BOOLEAN, isPrimaryKey, isUnique, isNullable) {
-    _fieldValue = defaultValue;
-}
+    Field(fieldName, BOOLEAN, isPrimaryKey, isUnique, isNullable), _fieldValue(defaultValue) {}
 
 void BooleanField::setValue(bool value) {
     setNull(false);

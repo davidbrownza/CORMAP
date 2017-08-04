@@ -1,12 +1,11 @@
 #include "Model.h"
 #include <iostream>
 
-Model::Model(string name) {
-    tableName = name;
-}
+Model::Model(string name) :
+    tableName(name) {}
 
 Model::~Model() {
-    for (vector<Field*>::const_iterator it = fields.begin(); it != fields.end(); it++) {
+    for (vector<Field*>::const_iterator it = fields.begin(); it != fields.end(); ++it) {
         delete *it;
     }
     fields.clear();
@@ -85,7 +84,7 @@ int Model::insertBatch(vector<Model*> models, unsigned int batchsize, Mode mode)
         for (unsigned int j = 0; j < m->fields.size(); j++) {
             Field * f = m->fields[j];
 
-            if (!f->isAutoFilled()) {
+            if (f->isAutoFilled() == false) {
                 paramNum++;
 
                 if (f->isNull()) {
@@ -96,7 +95,7 @@ int Model::insertBatch(vector<Model*> models, unsigned int batchsize, Mode mode)
             }
         }
 
-        if (i+1 == size || (!isFinalBatch && (i+1) % batchsize == 0)) {
+        if (i+1 == size || (isFinalBatch == false && (i+1) % batchsize == 0)) {
             _connection.executeStatement();
 
             //reset paramNum after execution
@@ -179,7 +178,7 @@ void Model::generateSQLParts(string &sqlHead, string &sqlBatch, string &sqlUpdat
     }
 }
 
-string Model::generateSQLTail(string sqlBatch, string sqlUpdate, int batchsize, Mode mode) {
+string Model::generateSQLTail(string &sqlBatch, string &sqlUpdate, int batchsize, Mode mode) {
     string sqlTail = sqlBatch;
 
     for (int j = 1; j < batchsize; j++) {

@@ -19,8 +19,8 @@ class Field {
         bool _isPrimaryKey;
         bool _isUnique;
         bool _isNullable;
-        bool _isNull;
         bool _isAutoFilled;
+        bool _isNull;
 
     public:
         Field(string fieldName, FieldType fieldType, bool isPrimaryKey=false, bool isUnique=false, bool isNullable=true, bool isAutoFilled=false);
