@@ -1,7 +1,12 @@
-<img src="https://travis-ci.org/davidbrownza/CORMAP.svg?branch=master" align="right">
-
 # CORMAP
 Simple C++ classes for Object Relational Mapping
+
+### Project Status
+| Branch | Build Status                                                                                                              | Code Style                                                                                                                                                                                                                                                    | Coverage | 
+|--------|---------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------| 
+| Master | [![Build Status](https://travis-ci.org/davidbrownza/CORMAP.svg?branch=master)](https://travis-ci.org/davidbrownza/CORMAP) | [![Codacy Badge](https://api.codacy.com/project/badge/Grade/44542181989040709892e78dfd752b2e)](https://www.codacy.com/app/davidbrownza/CORMAP?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=davidbrownza/CORMAP&amp;utm_campaign=Badge_Grade) | n/a      | 
+| Stable | n/a                                                                                                                       | n/a                                                                                                                                                                                                                                                           | n/a      | 
+
 
 ### Dependencies:
 `sudo apt-get install libmysqlcppconn-dev`
