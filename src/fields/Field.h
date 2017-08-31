@@ -8,7 +8,7 @@
 using namespace std;
 
 enum FieldType {
-    INTEGER, FLOAT, TEXT, CHAR, BOOLEAN
+    INTEGER, FLOAT, TEXT, CHAR, BOOLEAN, BLOB
 };
 
 class Field {
@@ -25,7 +25,7 @@ class Field {
     public:
         Field(string fieldName, FieldType fieldType, bool isPrimaryKey=false, bool isUnique=false, bool isNullable=true, bool isAutoFilled=false);
         virtual ~Field() {};
-        
+
         string getName();
         FieldType getType();
         bool isUnique();

@@ -8,6 +8,7 @@
 #include "../fields/TextField.h"
 #include "../fields/CharField.h"
 #include "../fields/BooleanField.h"
+#include "../fields/BlobField.h"
 
 #include <string>
 #include <vector>
@@ -33,6 +34,8 @@ class Model {
         TextField* textField(string fieldName, string defaultValue="", bool isPrimaryKey=false, bool isUnique=false, bool isNullable=true);
         CharField* charField(string fieldName, int maxLength, string defaultValue="", bool isPrimaryKey=false, bool isUnique=false, bool isNullable=true);
         BooleanField* booleanField(string fieldName, bool defaultValue=false, bool isPrimaryKey=false, bool isUnique=false, bool isNullable=true);
+        BlobField* blobField(string fieldName, bool isPrimaryKey=false, bool isUnique=false, bool isNullable=true);
+
 
         int insert(Mode mode=UPDATE);
         int insertBatch(vector<Model*> models, unsigned int batchsize=100, Mode mode=UPDATE);

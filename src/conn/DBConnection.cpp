@@ -65,6 +65,10 @@ void DBConnection::setDouble(int parameterNumber, double value) {
     _preparedStatement->setDouble(parameterNumber, value);
 }
 
+void DBConnection::setBlob(int parameterNumber, istream &value) {
+    _preparedStatement->setBlob(parameterNumber, value);
+}
+
 void DBConnection::setNull(int parameterNumber) {
     _preparedStatement->setNull(parameterNumber, 0);
 }

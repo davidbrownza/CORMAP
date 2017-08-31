@@ -46,6 +46,13 @@ BooleanField* Model::booleanField(string fieldName, bool defaultValue, bool isPr
     return f;
 }
 
+BlobField* Model::blobField(string fieldName, bool isPrimaryKey, bool isUnique, bool isNullable) {
+    BlobField * f = new BlobField(fieldName, isPrimaryKey, isUnique, isNullable);
+    fields.push_back(f);
+
+    return f;
+}
+
 int Model::insert(Mode mode) {
     vector<Model*> models;
     models.push_back(this);
@@ -71,10 +78,10 @@ int Model::insertBatch(vector<Model*> models, unsigned int batchsize, Mode mode)
 
     _connection.prepareStatement(sqlHead + sqlTail);
 
-    int paramNum = 0;    
+    int paramNum = 0;
     for (unsigned int i = 0; i < models.size(); i++) {
         Model * m = models[i];
-        
+
         for (unsigned int j = 0; j < m->fields.size(); j++) {
             Field * f = m->fields[j];
 

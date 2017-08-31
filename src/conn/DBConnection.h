@@ -19,6 +19,7 @@ class DBConnection {
         void setString(int parameterNumber, string value);
         void setInt(int parameterNumber, int value);
         void setDouble(int parameterNumber, double value);
+        void setBlob(int parameterNumber, istream &value);
         void setNull(int parameterNumber);
 
         //DB Connection Methods
