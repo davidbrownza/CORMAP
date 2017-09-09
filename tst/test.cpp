@@ -11,6 +11,7 @@ class Protein: public Model {
         CharField * proteinChain = charField ("Protein_Chain", 5);
         TextField * proteinName = textField ("Protein_Name");
         BooleanField * proteinIsDrugTarget = booleanField ("Protein_IsDrugTarget");
+        FileField * shouldProbablyBeAPDBFile = fileField ("Protein_ProteinFile", "../files");
 };
 
 //main method
@@ -29,6 +30,7 @@ int main(int argc, const char* argv[] ) {
     m.proteinChain->setValue("A");
     m.proteinName->setValue("Name");
     m.proteinIsDrugTarget->setValue(true);
+    m.shouldProbablyBeAPDBFile->saveNewFile("testfile01.txt", "proteinfile.txt");
 
     m.insert();
 
@@ -37,4 +39,7 @@ int main(int argc, const char* argv[] ) {
     cout << m.proteinName->getValue() << " " << m.proteinName->getName() << endl;
     cout << m.proteinChain->getValue() << " " << m.proteinChain->getName() << " " << m.proteinChain->getMaxLength() << endl;
     cout << m.proteinIsDrugTarget->getValue() << " " << m.proteinIsDrugTarget->getName() << endl;
+    cout << m.shouldProbablyBeAPDBFile->getValue() << " " << m.shouldProbablyBeAPDBFile->getName() << endl;
+
+    m.shouldProbablyBeAPDBFile->getFile("../files/gottenFile01.txt");
 }
