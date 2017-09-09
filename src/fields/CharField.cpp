@@ -6,7 +6,7 @@ CharField::CharField(string fieldName, int maxLength, string defaultValue, bool 
 
 void CharField::setValue(string value) {
     if (value.length() > _maxLength) {
-        throw length_error("Field value exeeds the maximum allowed length");
+        throw length_error("Field value exceeds the maximum allowed length");
     }
 
     setNull(false);

@@ -1,0 +1,11 @@
+Simple text file to test FileField class.
+FYI, plan for using the class was as follows...
+
+A) Allow users to save files:
+When a user enters a file entry in the database.
+    1) They give the full path to the file
+    2) Cormap must make a copy of the file and save it to a specific path
+    3) Cormap must keep track of both the path and the name of the file
+
+b) Provide functionality to access the file (more tricksy)
+I guess we can reverse the process in (A)
